@@ -1,13 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { render } = require('ejs');
 const Search = require('./search');
 
 const app = express();
 const es = new Search();
 
-app.set('view engine', 'ejs');
+app.use(cors({ origin: 'http://localhost:3001' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
     try {
@@ -18,12 +21,12 @@ app.get('/', async (req, res) => {
   
         res.json({
           documents: allDocuments.hits.hits
-      });
+        });
     } catch (error) {
         console.error('Error retrieving all documents:', error);
         res.status(500).send('Internal Server Error');
     }
-  });
+});
 
 app.post('/', async (req, res) => {
     const start_time = new Date();
