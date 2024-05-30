@@ -6,7 +6,13 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@lib/data": ["./app/lib/data.ts"],
+      "@/components/*": ["./components/*"],
+      "@/hooks/*": ["./hooks/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

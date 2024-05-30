@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 function Copyright(props: any) {
   return (
@@ -26,17 +28,28 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const username = data.get('email') as string;
+    const password = data.get('password') as string;
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      username,
+      password
     });
+
+    if (result?.error) {
+      console.error('Error signing in:', result.error);
+    } else {
+      router.push('/dashboard');
+    }
   };
 
   return (
