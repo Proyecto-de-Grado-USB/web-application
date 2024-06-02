@@ -25,9 +25,9 @@ import Orders from './Orders';
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      {'Derechos de Autor © '}
+      <Link color="inherit" href="http://crai.usalesiana.edu.bo/">
+        Universidad Salesiana de Bolivia
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -102,6 +102,7 @@ export default function Dashboard() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
+              backgroundColor: '#f8b40c'
             }}
           >
             <IconButton
@@ -121,9 +122,9 @@ export default function Dashboard() {
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, fontWeight: 'bold' }}
             >
-              Dashboard
+              Panel Administrativo
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
