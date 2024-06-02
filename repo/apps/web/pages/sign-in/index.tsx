@@ -14,13 +14,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Tu sitio web
+      {'Derechos de Autor © '}
+      <Link color="inherit" href="http://crai.usalesiana.edu.bo/">
+        Universidad Salesiana de Bolivia
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -30,8 +32,22 @@ function Copyright(props: any) {
 
 const defaultTheme = createTheme();
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function SignIn() {
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const [severity, setSeverity] = React.useState<'success' | 'error'>('success');
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -46,8 +62,13 @@ export default function SignIn() {
     });
 
     if (result?.error) {
-      console.error('Error signing in:', result.error);
+      setMessage('Acceso Denegado');
+      setSeverity('error');
+      setOpen(true);
     } else {
+      setMessage('Acceso Concedido');
+      setSeverity('success');
+      setOpen(true);
       router.push('/dashboard');
     }
   };
@@ -109,16 +130,16 @@ export default function SignIn() {
                   ¿Olvidaste la contraseña?
                 </Link>
               </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"¿No tienes una cuenta? Regístrate"}
-                </Link>
-              </Grid>
             </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }
