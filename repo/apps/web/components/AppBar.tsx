@@ -39,7 +39,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
@@ -51,7 +50,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+interface SearchAppBarProps {
+  setQuery: (query: string) => void;
+}
+
+export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar>
@@ -80,6 +87,7 @@ export default function SearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleInputChange}
             />
           </Search>
         </Toolbar>
