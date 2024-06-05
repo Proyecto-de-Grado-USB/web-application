@@ -40,7 +40,7 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
                         },
                     },
                 }}
-                pageSizeOptions={[20]}
+                pageSizeOptions={[20, 50, 100]}
                 slots={{ toolbar: CustomToolbar }}
             />
         </Box>
