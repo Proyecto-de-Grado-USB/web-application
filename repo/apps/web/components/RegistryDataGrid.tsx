@@ -30,6 +30,16 @@ function CustomToolbar() {
     );
 }
 
+const localeText = {
+    toolbarFilters: 'Filtros',
+    toolbarExport: 'Exportar',
+    MuiTablePagination: {
+        labelRowsPerPage: 'Filas por Página',
+        labelDisplayedRows: ({ from, to, count }) =>
+            `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
+    },
+};
+
 export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProps>) {
     const rowsWithNumbers = rows.map((row, index) => ({
         ...row,
@@ -50,6 +60,7 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
                 }}
                 pageSizeOptions={[20, 50, 100]}
                 slots={{ toolbar: CustomToolbar }}
+                localeText={localeText}
                 sx={{
                     '& .MuiDataGrid-root': {
                         fontSize: '1.2rem',
