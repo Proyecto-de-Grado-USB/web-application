@@ -41,7 +41,7 @@ app.post('/', async (req, res) => {
                     must: {
                         multi_match: {
                             query: parsed_query,
-                            fields: ['title', 'author', 'publisher', 'notes'],
+                            fields: ['*'],
                         },
                     },
                     ...filters,
