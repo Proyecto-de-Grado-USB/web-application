@@ -6,7 +6,14 @@ export interface Registry {
     year: string;
     city: string;
     country: string;
-    number?: number;
+    edition?: string;
+    format: string;
+    isbn?: string;
+    language: string;
+    pages?: number;
+    dimensions?: string;
+    subject: string;
+    notes?: string;
 }
 
 export interface RegistryDataGridProps {

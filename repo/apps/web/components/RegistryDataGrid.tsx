@@ -11,6 +11,14 @@ const columns: GridColDef[] = [
     { field: 'year', headerName: 'Año', width: 100 },
     { field: 'city', headerName: 'Ciudad', width: 120 },
     { field: 'country', headerName: 'País', width: 120 },
+    { field: 'edition', headerName: 'Edición', width: 120 },
+    { field: 'format', headerName: 'Formato', width: 120 },
+    { field: 'isbn', headerName: 'ISBN', width: 150 },
+    { field: 'language', headerName: 'Idioma', width: 120 },
+    { field: 'pages', headerName: 'Páginas', width: 100 },
+    { field: 'dimensions', headerName: 'Dimensiones', width: 150 },
+    { field: 'subject', headerName: 'Tema', width: 180 },
+    { field: 'notes', headerName: 'Notas', width: 200 },
 ];
 
 function CustomToolbar() {

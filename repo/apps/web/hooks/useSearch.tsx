@@ -9,6 +9,14 @@ interface DocumentSource {
     year: number;
     city: string;
     country: string;
+    edition?: string;
+    format: string;
+    isbn?: string;
+    language: string;
+    pages?: number;
+    dimensions?: string;
+    subject: string;
+    notes?: string;
 }
 
 interface DocumentResult {
