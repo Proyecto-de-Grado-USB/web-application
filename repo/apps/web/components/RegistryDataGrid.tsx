@@ -37,7 +37,7 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
     }));
 
     return (
-        <Box sx={{ height: 600, width: '100%', maxWidth: '1050px', margin: '0 auto' }}>
+        <Box sx={{ height: 'calc(100vh - 100px)', width: '98%', mt: '120px' }}>
             <DataGrid
                 rows={rowsWithNumbers}
                 columns={columns}
@@ -50,6 +50,11 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
                 }}
                 pageSizeOptions={[20, 50, 100]}
                 slots={{ toolbar: CustomToolbar }}
+                sx={{
+                    '& .MuiDataGrid-root': {
+                        fontSize: '1.2rem',
+                    },
+                }}
             />
         </Box>
     );
