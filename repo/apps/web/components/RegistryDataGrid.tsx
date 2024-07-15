@@ -47,7 +47,7 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
     }));
 
     return (
-        <Box sx={{ ...sx }}>
+        <Box sx={{ ...sx, backgroundColor: 'white' }}>
             <DataGrid
                 rows={rowsWithNumbers}
                 columns={columns}
