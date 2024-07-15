@@ -28,6 +28,11 @@ const columns: GridColDef[] = [
     { field: 'notes', headerName: 'Notas', width: 200 },
 ];
 
+const headerMap = columns.reduce((acc, column) => {
+    acc[column.field] = column.headerName;
+    return acc;
+}, {});
+
 function CustomToolbar() {
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -61,8 +66,10 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
     };
 
     const renderRowDetails = (row) => {
-        return Object.entries(row).map(([key, value]) => (
-            <DialogContentText key={key}>{`${key}: ${value}`}</DialogContentText>
+        return Object.entries(row).filter(([key]) => key !== 'id' && key !== 'number').map(([key, value]) => (
+            <DialogContentText key={key} component="div">
+                <strong>{`${headerMap[key]}:`}</strong> {value}
+            </DialogContentText>
         ));
     };
 
