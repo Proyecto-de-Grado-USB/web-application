@@ -9,9 +9,9 @@ import useSearchDocuments from '@/hooks/useSearch';
 import { SxProps } from '@mui/system';
 
 const gridStyles: SxProps = {
-  height: 'calc(100vh - 100px)', 
-  width: '98%', 
-  mt: '120px', 
+  height: 'calc(100vh - 600px)', 
+  width: '80%', 
+  mt: '0px', 
 };
 
 export default function Page(): JSX.Element {
@@ -52,9 +52,8 @@ export default function Page(): JSX.Element {
   return (
     <div>
       <Helmet>
-        <title>Búsqueda de Documentos</title>
+        <title>Gestión de Documentos</title>
       </Helmet>
-      <MenuAppBar setQuery={setQuery} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 64px)' }}>
         <RegistryDataGrid rows={formattedRows} sx={gridStyles} />
       </div>

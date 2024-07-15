@@ -1,3 +1,5 @@
+import { SxProps } from '@mui/system';
+
 export interface Registry {
     location: string;
     title: string;
@@ -18,4 +20,6 @@ export interface Registry {
 
 export interface RegistryDataGridProps {
     rows: Registry[];
+    sx?: SxProps;
+    toolbar?: boolean;
 }
