@@ -1,6 +1,13 @@
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid';
 import { RegistryDataGridProps } from './RegistryInterfaces';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import React from 'react';
 
 const columns: GridColDef[] = [
     { field: 'number', headerName: '#', width: 80 },
@@ -41,6 +48,24 @@ const localeText = {
 };
 
 export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<RegistryDataGridProps>) {
+    const [open, setOpen] = React.useState(false);
+    const [selectedRow, setSelectedRow] = React.useState(null);
+
+    const handleRowClick = (params) => {
+        setSelectedRow(params.row);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const renderRowDetails = (row) => {
+        return Object.entries(row).map(([key, value]) => (
+            <DialogContentText key={key}>{`${key}: ${value}`}</DialogContentText>
+        ));
+    };
+
     const rowsWithNumbers = rows.map((row, index) => ({
         ...row,
         number: index + 1,
@@ -51,6 +76,8 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
             <DataGrid
                 rows={rowsWithNumbers}
                 columns={columns}
+                onRowClick={handleRowClick}
+                rowSelectionModel={[]}
                 initialState={{
                     pagination: {
                         paginationModel: {
@@ -67,6 +94,15 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
                     },
                 }}
             />
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Detalles del Documento</DialogTitle>
+                <DialogContent>
+                    {selectedRow && renderRowDetails(selectedRow)}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
