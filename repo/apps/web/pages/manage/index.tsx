@@ -2,14 +2,13 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
 import useDocuments from '@/hooks/useElastic';
 import useSearchDocuments from '@/hooks/useSearch';
 import { SxProps } from '@mui/system';
 
 const gridStyles: SxProps = {
-  height: 'calc(100vh - 600px)', 
+  height: 'calc(100vh - 500px)', 
   width: '80%', 
   mt: '0px', 
 };
@@ -54,8 +53,8 @@ export default function Page(): JSX.Element {
       <Helmet>
         <title>Gestión de Documentos</title>
       </Helmet>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 64px)' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <RegistryDataGrid rows={formattedRows} sx={gridStyles} toolbar={false}/>
       </div>
     </div>
   );

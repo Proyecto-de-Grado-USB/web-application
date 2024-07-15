@@ -11,7 +11,7 @@ import { SxProps } from '@mui/system';
 const gridStyles: SxProps = {
   height: 'calc(100vh - 100px)', 
   width: '98%', 
-  mt: '120px', 
+  mt: '80px', 
 };
 
 export default function Page(): JSX.Element {
@@ -55,8 +55,8 @@ export default function Page(): JSX.Element {
         <title>Búsqueda de Documentos</title>
       </Helmet>
       <MenuAppBar setQuery={setQuery} />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'calc(100vh - 64px)' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <RegistryDataGrid rows={formattedRows} sx={gridStyles} toolbar={true}/>
       </div>
     </div>
   );

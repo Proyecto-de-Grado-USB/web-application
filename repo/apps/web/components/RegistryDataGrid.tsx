@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridToolbarFilterButton, GridToolbarExport } from '@mui/x-data-grid';
 import { RegistryDataGridProps } from './RegistryInterfaces';
-import { SxProps } from '@mui/system';
 
 const columns: GridColDef[] = [
     { field: 'number', headerName: '#', width: 80 },
@@ -41,7 +40,7 @@ const localeText = {
     },
 };
 
-export default function RegistryDataGrid({ rows, sx }: Readonly<RegistryDataGridProps>) {
+export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<RegistryDataGridProps>) {
     const rowsWithNumbers = rows.map((row, index) => ({
         ...row,
         number: index + 1,
@@ -60,7 +59,7 @@ export default function RegistryDataGrid({ rows, sx }: Readonly<RegistryDataGrid
                     },
                 }}
                 pageSizeOptions={[20, 50, 100]}
-                slots={{ toolbar: CustomToolbar }}
+                slots={toolbar ? { toolbar: CustomToolbar } : {}}
                 localeText={localeText}
                 sx={{
                     '& .MuiDataGrid-root': {
