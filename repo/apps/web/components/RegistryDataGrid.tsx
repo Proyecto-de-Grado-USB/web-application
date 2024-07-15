@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from "@mui/material/Box";
 import {
   DataGrid,
@@ -6,13 +7,7 @@ import {
   GridToolbarExport,
 } from "@mui/x-data-grid";
 import { RegistryDataGridProps } from "./RegistryInterfaces";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import React from "react";
+import DocumentDetailsDialog from './DocumentDetailsDialog';
 
 const columns: GridColDef[] = [
   { field: "number", headerName: "#", width: 80 },
@@ -33,11 +28,6 @@ const columns: GridColDef[] = [
   { field: "notes", headerName: "Notas", width: 200 },
 ];
 
-const headerMap = columns.reduce((acc, column) => {
-  acc[column.field] = column.headerName;
-  return acc;
-}, {});
-
 function CustomToolbar() {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
@@ -52,16 +42,11 @@ const localeText = {
   toolbarExport: "Exportar",
   MuiTablePagination: {
     labelRowsPerPage: "Filas por Página",
-    labelDisplayedRows: ({ from, to, count }) =>
-      `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
+    labelDisplayedRows: ({ from, to, count }) => `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
   },
 };
 
-export default function RegistryDataGrid({
-  rows,
-  sx,
-  toolbar,
-}: Readonly<RegistryDataGridProps>) {
+export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<RegistryDataGridProps>) {
   const [open, setOpen] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState(null);
 
@@ -72,16 +57,6 @@ export default function RegistryDataGrid({
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const renderRowDetails = (row) => {
-    return Object.entries(row)
-      .filter(([key]) => key !== "id" && key !== "number")
-      .map(([key, value]) => (
-        <DialogContentText key={key} component="div">
-          <strong>{`${headerMap[key]}:`}</strong> {value}
-        </DialogContentText>
-      ));
   };
 
   const rowsWithNumbers = rows.map((row, index) => ({
@@ -112,19 +87,11 @@ export default function RegistryDataGrid({
           },
         }}
       />
-      <Dialog
+      <DocumentDetailsDialog
         open={open}
         onClose={handleClose}
-        PaperProps={{ style: { minWidth: "400px" } }}
-      >
-        <DialogTitle>Detalles del Documento</DialogTitle>
-        <DialogContent>
-          {selectedRow && renderRowDetails(selectedRow)}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        selectedRow={selectedRow}
+      />
     </Box>
   );
 }
