@@ -47,7 +47,7 @@ const localeText = {
   },
 };
 
-export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<RegistryDataGridProps>) {
+export default function RegistryDataGrid({ rows, sx, isSearch }: Readonly<RegistryDataGridProps>) {
   const [docDetailsOpen, setDocDetailsOpen] = useState(false);
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -75,7 +75,7 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
       <DataGrid
         rows={rowsWithNumbers}
         columns={columns}
-        onRowClick={handleRowClick}
+        onRowClick={isSearch ? handleRowClick : undefined}
         rowSelectionModel={[]}
         initialState={{
           pagination: {
@@ -85,7 +85,7 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
           },
         }}
         pageSizeOptions={[20, 50, 100]}
-        slots={toolbar ? { toolbar: CustomToolbar } : {}}
+        slots={isSearch ? { toolbar: CustomToolbar } : {}}
         localeText={localeText}
         sx={{
           "& .MuiDataGrid-root": {

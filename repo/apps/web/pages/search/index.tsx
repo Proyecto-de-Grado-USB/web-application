@@ -56,7 +56,7 @@ export default function Page(): JSX.Element {
       </Helmet>
       <MenuAppBar setQuery={setQuery} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} toolbar={true}/>
+        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true}/>
       </div>
     </div>
   );

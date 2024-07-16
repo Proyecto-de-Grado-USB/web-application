@@ -63,7 +63,7 @@ export default function Page(): JSX.Element {
             <title>Gestión de Documentos</title>
           </Helmet>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <RegistryDataGrid rows={formattedRows} sx={gridStyles} toolbar={false}/>
+            <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={false}/>
           </div>
         </Box>
       </Box>

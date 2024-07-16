@@ -21,5 +21,5 @@ export interface Registry {
 export interface RegistryDataGridProps {
     rows: Registry[];
     sx?: SxProps;
-    toolbar?: boolean;
+    isSearch?: boolean;
 }
