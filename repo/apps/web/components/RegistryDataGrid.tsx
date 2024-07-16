@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from "@mui/material/Box";
 import {
   DataGrid,
@@ -8,6 +8,7 @@ import {
 } from "@mui/x-data-grid";
 import { RegistryDataGridProps } from "./RegistryInterfaces";
 import DocumentDetailsDialog from './DocumentDetailsDialog';
+import UserDetailsDialog from './UserDetailsDialog';
 
 const columns: GridColDef[] = [
   { field: "number", headerName: "#", width: 80 },
@@ -47,16 +48,21 @@ const localeText = {
 };
 
 export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<RegistryDataGridProps>) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState(null);
+  const [docDetailsOpen, setDocDetailsOpen] = useState(false);
+  const [userDetailsOpen, setUserDetailsOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowClick = (params) => {
     setSelectedRow(params.row);
-    setOpen(true);
+    setDocDetailsOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDocDetails = () => {
+    setDocDetailsOpen(false);
+  };
+
+  const handleOpenUserDetails = () => {
+    setUserDetailsOpen(true);
   };
 
   const rowsWithNumbers = rows.map((row, index) => ({
@@ -88,9 +94,14 @@ export default function RegistryDataGrid({ rows, sx, toolbar }: Readonly<Registr
         }}
       />
       <DocumentDetailsDialog
-        open={open}
-        onClose={handleClose}
+        open={docDetailsOpen}
+        onClose={handleCloseDocDetails}
         selectedRow={selectedRow}
+        onOpenUserDetails={handleOpenUserDetails}
+      />
+      <UserDetailsDialog
+        open={userDetailsOpen}
+        onClose={() => setUserDetailsOpen(false)}
       />
     </Box>
   );

@@ -25,7 +25,7 @@ const headerMap = {
   notes: 'Notas'
 };
 
-function DocumentDetailsDialog({ open, onClose, selectedRow }) {
+function DocumentDetailsDialog({ open, onClose, selectedRow, onOpenUserDetails }) {
   const renderRowDetails = (row) => {
     return Object.entries(row)
       .filter(([key]) => key !== "id" && key !== "number")
@@ -36,14 +36,19 @@ function DocumentDetailsDialog({ open, onClose, selectedRow }) {
       ));
   };
 
+  const handleAddUser = () => {
+    onClose();
+    onOpenUserDetails();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} PaperProps={{ style: { minWidth: "400px" } }}>
+    <Dialog open={open} onClose={onClose} PaperProps={{ style: { minWidth: "500px" } }}>
       <DialogTitle>Detalles del Documento</DialogTitle>
       <DialogContent>
         {selectedRow && renderRowDetails(selectedRow)}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={handleAddUser}>Agregar Usuario</Button>
       </DialogActions>
     </Dialog>
   );
