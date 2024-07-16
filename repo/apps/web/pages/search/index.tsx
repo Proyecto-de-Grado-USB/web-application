@@ -9,9 +9,9 @@ import useSearchDocuments from '@/hooks/useSearch';
 import { SxProps } from '@mui/system';
 
 const gridStyles: SxProps = {
-  height: 'calc(100vh - 100px)', 
-  width: '98%', 
-  mt: '80px', 
+  height: 'calc(100vh - 200px)', 
+  width: '95%', 
+  mt: '100px', 
 };
 
 export default function Page(): JSX.Element {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import {
   DataGrid,
@@ -7,8 +7,8 @@ import {
   GridToolbarExport,
 } from "@mui/x-data-grid";
 import { RegistryDataGridProps } from "./RegistryInterfaces";
-import DocumentDetailsDialog from './DocumentDetailsDialog';
-import UserDetailsDialog from './UserDetailsDialog';
+import DocumentDetailsDialog from "./DocumentDetailsDialog";
+import UserDetailsDialog from "./UserDetailsDialog";
 
 const columns: GridColDef[] = [
   { field: "number", headerName: "#", width: 80 },
@@ -43,11 +43,16 @@ const localeText = {
   toolbarExport: "Exportar",
   MuiTablePagination: {
     labelRowsPerPage: "Filas por Página",
-    labelDisplayedRows: ({ from, to, count }) => `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
+    labelDisplayedRows: ({ from, to, count }) =>
+      `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
   },
 };
 
-export default function RegistryDataGrid({ rows, sx, isSearch }: Readonly<RegistryDataGridProps>) {
+export default function RegistryDataGrid({
+  rows,
+  sx,
+  isSearch,
+}: Readonly<RegistryDataGridProps>) {
   const [docDetailsOpen, setDocDetailsOpen] = useState(false);
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -71,38 +76,54 @@ export default function RegistryDataGrid({ rows, sx, isSearch }: Readonly<Regist
   }));
 
   return (
-    <Box sx={{ ...sx, backgroundColor: "white" }}>
-      <DataGrid
-        rows={rowsWithNumbers}
-        columns={columns}
-        onRowClick={isSearch ? handleRowClick : undefined}
-        rowSelectionModel={[]}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 20,
+    <>
+      <Box sx={{ ...sx, backgroundColor: "white", position: "relative" }}>
+        <DataGrid
+          rows={rowsWithNumbers}
+          columns={columns}
+          onRowClick={isSearch ? handleRowClick : undefined}
+          rowSelectionModel={[]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 20,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[20, 50, 100]}
-        slots={isSearch ? { toolbar: CustomToolbar } : {}}
-        localeText={localeText}
-        sx={{
-          "& .MuiDataGrid-root": {
-            fontSize: "1.2rem",
-          },
-        }}
-      />
-      <DocumentDetailsDialog
-        open={docDetailsOpen}
-        onClose={handleCloseDocDetails}
-        selectedRow={selectedRow}
-        onOpenUserDetails={handleOpenUserDetails}
-      />
-      <UserDetailsDialog
-        open={userDetailsOpen}
-        onClose={() => setUserDetailsOpen(false)}
-      />
-    </Box>
+          }}
+          pageSizeOptions={[20, 50, 100]}
+          slots={isSearch ? { toolbar: CustomToolbar } : {}}
+          localeText={localeText}
+          sx={{
+            "& .MuiDataGrid-root": {
+              fontSize: "1.2rem",
+            },
+          }}
+        />
+        <DocumentDetailsDialog
+          open={docDetailsOpen}
+          onClose={handleCloseDocDetails}
+          selectedRow={selectedRow}
+          onOpenUserDetails={handleOpenUserDetails}
+        />
+        <UserDetailsDialog
+          open={userDetailsOpen}
+          onClose={() => setUserDetailsOpen(false)}
+        />
+      </Box>
+      {isSearch && (
+        <a
+          href="https://elibro.net/es/lc/usalesiana/login_usuario/?next=/es/lc/usalesiana/inicio/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ position: "absolute", bottom: 16, right: 16 }}
+        >
+          <img
+            src="https://df5kbf1hky40.cloudfront.net/static/global/img/e-libro-logo.c5173e113607.png"
+            alt="e-Libro logo"
+            style={{ width: 100, height: "auto" }}
+          />
+        </a>
+      )}
+    </>
   );
 }
