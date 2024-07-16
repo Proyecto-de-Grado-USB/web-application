@@ -6,13 +6,29 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function UserDetailsDialog({ open, onClose }) {
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogTitle>Detalles del Usuario</DialogTitle>
+            <DialogTitle>
+                Detalles del Usuario
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
             <DialogContent>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ mt: '1px' }}>
                     <Grid item xs={12} sm={6}>
                         <TextField label="Nombre Completo" variant="outlined" fullWidth />
                     </Grid>
@@ -40,7 +56,7 @@ function UserDetailsDialog({ open, onClose }) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Guardar</Button>
+                <Button onClick={onClose}>Enviar Solicitud</Button>
             </DialogActions>
         </Dialog>
     );

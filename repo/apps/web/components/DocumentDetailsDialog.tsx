@@ -5,6 +5,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const headerMap = {
   number: '#',
@@ -43,12 +45,26 @@ function DocumentDetailsDialog({ open, onClose, selectedRow, onOpenUserDetails }
 
   return (
     <Dialog open={open} onClose={onClose} PaperProps={{ style: { minWidth: "500px" } }}>
-      <DialogTitle>Detalles del Documento</DialogTitle>
+      <DialogTitle>
+        Detalles del Documento
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         {selectedRow && renderRowDetails(selectedRow)}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleAddUser}>Agregar Usuario</Button>
+        <Button onClick={handleAddUser}>Solicitar Préstamo</Button>
       </DialogActions>
     </Dialog>
   );
