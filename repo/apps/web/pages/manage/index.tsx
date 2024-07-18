@@ -6,6 +6,7 @@ import RegistryDataGrid from '@/components/RegistryDataGrid';
 import AppBarWithDrawer from '@/components/AppBarWithDrawer';
 import useDocuments from '@/hooks/useElastic';
 import useSearchDocuments from '@/hooks/useSearch';
+import useInsert from '@/hooks/useInsert';
 import { Box, Button, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SxProps } from '@mui/system';
 
@@ -21,6 +22,7 @@ export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
+  const { insertDocument } = useInsert();
 
   const isSearching = query !== '';
   const rows = isSearching ? results : documents;
@@ -31,7 +33,7 @@ export default function Page(): JSX.Element {
     title: doc._source.title,
     author: doc._source.author || `Author ${index + 1}`,
     publisher: doc._source.publisher || `Publisher ${index + 1}`,
-    year: doc._source.year.toString(),
+    year: doc._source.year ? doc._source.year.toString() : `Year ${2000 + index}`,
     city: doc._source.city || `City ${String.fromCharCode(65 + index)}`,
     country: doc._source.country || `Country ${String.fromCharCode(65 + index)}`,
     edition: doc._source.edition || `Edition ${index + 1}`,
@@ -42,7 +44,36 @@ export default function Page(): JSX.Element {
     dimensions: doc._source.dimensions || `Dimensions ${index + 1}`,
     subject: doc._source.subject || `Subject ${index + 1}`,
     notes: doc._source.notes || `Notes ${index + 1}`,
-  }));
+}));
+
+  const documentToSend = {
+    id: 0,
+    location: "1Location",
+    title: "Magic Book",
+    author: "Quique Almansa-Aguiló",
+    publisher: "Lillo, Marti and Viana",
+    year: "1997",
+    city: "Valladolid",
+    country: "Sierra Leona",
+    edition: "impedit",
+    format: "documento",
+    isbn: "978-0-8231-7820-9",
+    language: "Ewé",
+    pages: 357,
+    dimensions: "30x18 cm",
+    subject: "800 – Literatura",
+    notes: "Edición revisada y ampliada."
+  };
+
+  const handleAddDocument = async () => {
+    try {
+      await insertDocument(documentToSend);
+      alert('Se añadió el documento.');
+    } catch (error) {
+      console.error('Error adding document:', error);
+      alert('No se pudo añadir el documento.');
+    }
+  };
 
   if ((isSearching && searchLoading) || (!isSearching && elasticLoading)) {
     return <div>Loading...</div>;
@@ -62,7 +93,7 @@ export default function Page(): JSX.Element {
           <Helmet>
             <title>Gestión de Documentos</title>
           </Helmet>
-          <Button variant="contained" sx={{ml: '175px', mt: '100px'}}>Agregar</Button>
+          <Button variant="contained" onClick={handleAddDocument} sx={{ml: '175px', mt: '100px'}}>Agregar</Button>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={false}/>
           </div>

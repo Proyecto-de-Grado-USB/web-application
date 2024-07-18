@@ -8,6 +8,7 @@ const app = express();
 const es = new Search();
 
 app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
@@ -16,7 +17,7 @@ app.get('/', async (req, res) => {
     try {
         const allDocuments = await es.search({
             query: { match_all: {} },
-            size: 1000
+            size: 10000
         });
   
         res.json({
@@ -64,6 +65,17 @@ app.post('/', async (req, res) => {
     } catch (error) {
         console.error('Error handling search:', error);
         res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/document', async (req, res) => {
+    const document = req.body;
+    try {
+        const result = await es.insertDocument(document);
+        res.json({ message: 'Document inserted successfully', result });
+    } catch (error) {
+        console.error('Error inserting document:', error);
+        res.status(500).send('Error inserting document.');
     }
 });
 
