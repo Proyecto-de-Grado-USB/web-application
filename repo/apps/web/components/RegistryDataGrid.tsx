@@ -9,6 +9,7 @@ import {
 import { RegistryDataGridProps } from "./RegistryInterfaces";
 import DocumentDetailsDialog from "./DocumentDetailsDialog";
 import UserDetailsDialog from "./UserDetailsDialog";
+import useDelete from '@/hooks/useDelete';
 
 const columns: GridColDef[] = [
   { field: "number", headerName: "#", width: 80 },
@@ -57,9 +58,15 @@ export default function RegistryDataGrid({
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const handleRowClick = (params) => {
+  const { deleteDocument, isLoading, error } = useDelete();
+
+  const handleDetails = (params) => {
     setSelectedRow(params.row);
     setDocDetailsOpen(true);
+  };
+
+  const handleDelete = (params) => {
+    deleteDocument(params.id.toString())
   };
 
   const handleCloseDocDetails = () => {
@@ -81,8 +88,7 @@ export default function RegistryDataGrid({
         <DataGrid
           rows={rowsWithNumbers}
           columns={columns}
-          onRowClick={isSearch ? handleRowClick : undefined}
-          rowSelectionModel={[]}
+          onRowClick={isSearch ? handleDetails : handleDelete}
           initialState={{
             pagination: {
               paginationModel: {

@@ -102,6 +102,21 @@ app.post('/reindex', async (req, res) => {
   }
 });
 
+app.delete('/document/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await es.deleteDocument(id);
+        if (result.result === 'deleted') {
+            res.json({ message: 'Document deleted successfully' });
+        } else {
+            res.status(404).send('Document not found');
+        }
+    } catch (error) {
+        console.error('Error deleting document:', error);
+        res.status(500).send('Error deleting document');
+    }
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
