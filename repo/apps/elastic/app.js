@@ -117,6 +117,18 @@ app.delete('/document/:id', async (req, res) => {
     }
 });
 
+app.put('/document/:id', async (req, res) => {
+    const id = req.params.id;
+    const document = req.body;
+    try {
+        const result = await es.updateDocument(id, document);
+        res.json({ message: 'Document updated successfully', result });
+    } catch (error) {
+        console.error('Error updating document:', error);
+        res.status(500).send('Error updating document');
+    }
+});
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

@@ -84,6 +84,21 @@ class Search {
             return null;
         }
     }    
+
+    async updateDocument(id, document) {
+        try {
+            return await this.client.update({
+                index: 'my_documents',
+                id: id,
+                body: {
+                    doc: document
+                }
+            });
+        } catch (error) {
+            console.error('Error updating document:', error);
+            return null;
+        }
+    }    
 }
 
 module.exports = Search;
