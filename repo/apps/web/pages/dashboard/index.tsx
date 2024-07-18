@@ -37,12 +37,12 @@ export default function Dashboard() {
   return (
     <>
       <Helmet>
-        <title>Panel Administrativo</title>
+        <title>Panel</title>
       </Helmet>
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
-          <AppBarWithDrawer />
+          <AppBarWithDrawer title={"Panel Administrativo"}/>
           <Box component="main" sx={{
             backgroundColor: (theme) =>
               theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900],
