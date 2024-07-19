@@ -35,3 +35,16 @@ export async function findUserByEmailAndPassword(email: string, password: string
     connection.release();
   }
 }
+
+export async function getAllLoans() {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.query<any[]>('SELECT * FROM loans');
+    return rows;
+  } catch (error) {
+    console.error('Error querying loans:', error);
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
