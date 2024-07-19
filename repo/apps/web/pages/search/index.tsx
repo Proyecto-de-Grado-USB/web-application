@@ -24,6 +24,14 @@ export default function Page(): JSX.Element {
     year: doc._source.year.toString(),
     city: doc._source.city || `City ${String.fromCharCode(65 + index)}`,
     country: doc._source.country || `Country ${String.fromCharCode(65 + index)}`,
+    edition: doc._source.edition || `Edition ${index + 1}`,
+    format: doc._source.format || `Format ${index + 1}`,
+    isbn: doc._source.isbn || `ISBN ${index + 1}`,
+    language: doc._source.language || `Language ${index + 1}`,
+    pages: doc._source.pages || 100 + index,
+    dimensions: doc._source.dimensions || `Dimensions ${index + 1}`,
+    subject: doc._source.subject || `Subject ${index + 1}`,
+    notes: doc._source.notes || `Notes ${index + 1}`,
   }));
 
   if ((isSearching && searchLoading) || (!isSearching && elasticLoading)) {

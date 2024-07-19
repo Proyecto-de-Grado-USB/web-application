@@ -11,6 +11,14 @@ const columns: GridColDef[] = [
     { field: 'year', headerName: 'Año', width: 100 },
     { field: 'city', headerName: 'Ciudad', width: 120 },
     { field: 'country', headerName: 'País', width: 120 },
+    { field: 'edition', headerName: 'Edición', width: 120 },
+    { field: 'format', headerName: 'Formato', width: 120 },
+    { field: 'isbn', headerName: 'ISBN', width: 150 },
+    { field: 'language', headerName: 'Idioma', width: 120 },
+    { field: 'pages', headerName: 'Páginas', width: 100 },
+    { field: 'dimensions', headerName: 'Dimensiones', width: 150 },
+    { field: 'subject', headerName: 'Tema', width: 180 },
+    { field: 'notes', headerName: 'Notas', width: 200 },
 ];
 
 function CustomToolbar() {
@@ -22,6 +30,16 @@ function CustomToolbar() {
     );
 }
 
+const localeText = {
+    toolbarFilters: 'Filtros',
+    toolbarExport: 'Exportar',
+    MuiTablePagination: {
+        labelRowsPerPage: 'Filas por Página',
+        labelDisplayedRows: ({ from, to, count }) =>
+            `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
+    },
+};
+
 export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProps>) {
     const rowsWithNumbers = rows.map((row, index) => ({
         ...row,
@@ -29,7 +47,7 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
     }));
 
     return (
-        <Box sx={{ height: 600, width: '100%', maxWidth: '1050px', margin: '0 auto' }}>
+        <Box sx={{ height: 'calc(100vh - 100px)', width: '98%', mt: '120px' }}>
             <DataGrid
                 rows={rowsWithNumbers}
                 columns={columns}
@@ -42,6 +60,12 @@ export default function RegistryDataGrid({ rows }: Readonly<RegistryDataGridProp
                 }}
                 pageSizeOptions={[20, 50, 100]}
                 slots={{ toolbar: CustomToolbar }}
+                localeText={localeText}
+                sx={{
+                    '& .MuiDataGrid-root': {
+                        fontSize: '1.2rem',
+                    },
+                }}
             />
         </Box>
     );
