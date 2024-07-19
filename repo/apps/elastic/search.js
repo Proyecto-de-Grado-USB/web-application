@@ -72,6 +72,33 @@ class Search {
             return null;
         }
     }
+
+    async deleteDocument(id) {
+        try {
+            return await this.client.delete({
+                index: 'my_documents',
+                id: id
+            });
+        } catch (error) {
+            console.error('Error deleting document:', error);
+            return null;
+        }
+    }    
+
+    async updateDocument(id, document) {
+        try {
+            return await this.client.update({
+                index: 'my_documents',
+                id: id,
+                body: {
+                    doc: document
+                }
+            });
+        } catch (error) {
+            console.error('Error updating document:', error);
+            return null;
+        }
+    }    
 }
 
 module.exports = Search;

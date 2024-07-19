@@ -56,7 +56,7 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export default function AppBarWithDrawer() {
+export default function AppBarWithDrawer({ title }) {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -71,7 +71,7 @@ export default function AppBarWithDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1, fontWeight: "bold" }}>
-            Panel Administrativo
+            {title}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">

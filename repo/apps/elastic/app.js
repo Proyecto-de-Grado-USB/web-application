@@ -8,6 +8,7 @@ const app = express();
 const es = new Search();
 
 app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
@@ -16,7 +17,7 @@ app.get('/', async (req, res) => {
     try {
         const allDocuments = await es.search({
             query: { match_all: {} },
-            size: 1000
+            size: 10000
         });
   
         res.json({
@@ -67,6 +68,17 @@ app.post('/', async (req, res) => {
     }
 });
 
+app.post('/document', async (req, res) => {
+    const document = req.body;
+    try {
+        const result = await es.insertDocument(document);
+        res.json({ message: 'Document inserted successfully', result });
+    } catch (error) {
+        console.error('Error inserting document:', error);
+        res.status(500).send('Error inserting document.');
+    }
+});
+
 app.get('/document/:id', async (req, res) => {
     const id = req.params.id;
     try {
@@ -88,6 +100,33 @@ app.post('/reindex', async (req, res) => {
       console.error('Error reindexing:', error);
       res.status(500).send('Error reindexing.');
   }
+});
+
+app.delete('/document/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await es.deleteDocument(id);
+        if (result.result === 'deleted') {
+            res.json({ message: 'Document deleted successfully' });
+        } else {
+            res.status(404).send('Document not found');
+        }
+    } catch (error) {
+        console.error('Error deleting document:', error);
+        res.status(500).send('Error deleting document');
+    }
+});
+
+app.put('/document/:id', async (req, res) => {
+    const id = req.params.id;
+    const document = req.body;
+    try {
+        const result = await es.updateDocument(id, document);
+        res.json({ message: 'Document updated successfully', result });
+    } catch (error) {
+        console.error('Error updating document:', error);
+        res.status(500).send('Error updating document');
+    }
 });
 
 app.listen(3000, () => {
