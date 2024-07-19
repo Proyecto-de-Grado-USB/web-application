@@ -2,15 +2,18 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
+import AppBarWithDrawer from '@/components/AppBarWithDrawer';
 import useDocuments from '@/hooks/useElastic';
 import useSearchDocuments from '@/hooks/useSearch';
+import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SxProps } from '@mui/system';
 
+const defaultTheme = createTheme();
+
 const gridStyles: SxProps = {
-  height: 'calc(100vh - 200px)', 
-  width: '95%', 
+  height: 'calc(100vh - 500px)', 
+  width: '80%', 
   mt: '100px', 
 };
 
@@ -50,14 +53,20 @@ export default function Page(): JSX.Element {
   }
 
   return (
-    <div>
-      <Helmet>
-        <title>Búsqueda de Documentos</title>
-      </Helmet>
-      <MenuAppBar setQuery={setQuery} />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true}/>
-      </div>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex', backgroundColor: (theme) =>
+              theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900], }}>
+        <CssBaseline />
+        <AppBarWithDrawer />
+        <Box component="main" sx={{ flexGrow: 1, height: '100vh', overflow: 'auto' }}>
+          <Helmet>
+            <title>Gestión de Documentos</title>
+          </Helmet>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={false}/>
+          </div>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }

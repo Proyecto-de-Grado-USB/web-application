@@ -6,8 +6,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import router from "next/router";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -36,7 +36,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
-  width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -67,10 +66,18 @@ export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
             size="large"
             edge="start"
             color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
+            sx={{ mr: 1, ml: 1 }}
+            onClick={() => router.push("/")}
           >
-            <MenuIcon />
+            <img
+              src="https://yt3.ggpht.com/a/AATXAJzGIpn234_LYi-ZxPBp9xMV8SOqMRAsE36L0Q=s900-c-k-c0xffffffff-no-rj-mo"
+              alt="Welcome"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxWidth: "40px",
+              }}
+            />
           </IconButton>
           <Typography
             variant="h6"
