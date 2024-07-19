@@ -8,9 +8,30 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow }) => {
   const { updateDocument } = useUpdate();
   const { deleteDocument } = useDelete();
 
+  const labelMap = {
+    number: '#',
+    location: 'Ubicación',
+    title: 'Título',
+    author: 'Autor',
+    publisher: 'Editorial',
+    year: 'Año',
+    city: 'Ciudad',
+    country: 'País',
+    edition: 'Edición',
+    format: 'Formato',
+    isbn: 'ISBN',
+    language: 'Idioma',
+    pages: 'Páginas',
+    dimensions: 'Dimensiones',
+    subject: 'Tema',
+    notes: 'Notas'
+  };
+
   useEffect(() => {
     if (selectedRow) {
-      setFormData(selectedRow);
+      const { id, number, ...rest } = selectedRow;
+      setFormData(rest);
+      console.log(rest)
     }
   }, [selectedRow]);
 
@@ -40,13 +61,13 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Update Document</DialogTitle>
+      <DialogTitle>Actualizar Documento</DialogTitle>
       <DialogContent>
         {formData && Object.keys(formData).map((key) =>
           <TextField
             key={key}
             name={key}
-            label={key.charAt(0).toUpperCase() + key.slice(1)}
+            label={labelMap[key] || key.charAt(0).toUpperCase() + key.slice(1)}
             value={formData[key] || ''}
             onChange={handleChange}
             margin="dense"
@@ -55,8 +76,8 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow }) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleDelete} color="error">Delete</Button>
-        <Button onClick={handleUpdate} color="primary">Update</Button>
+        <Button onClick={handleDelete} color="error">Eliminar</Button>
+        <Button onClick={handleUpdate} color="primary">Guardar</Button>
       </DialogActions>
     </Dialog>
   );
