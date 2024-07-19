@@ -90,7 +90,7 @@ export default function AppBarWithDrawer({ title }) {
         <List component="nav">
           {mainListItems}
           <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
+          {false && secondaryListItems}
         </List>
       </Drawer>
     </>
