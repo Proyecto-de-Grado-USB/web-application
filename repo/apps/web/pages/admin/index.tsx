@@ -10,20 +10,22 @@ import PeopleIcon from '@mui/icons-material/People';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { useLoans } from '@/hooks/useLoans';
+import useDocuments from '@/hooks/useElastic';
 
 const defaultTheme = createTheme();
 
 export default function Page(): JSX.Element {
-  const { loans, isLoading, error } = useLoans();
+  const { loans, isLoading: loansLoading, error: loansError } = useLoans();
+  const { documents, loading: documentsLoading, error: documentsError } = useDocuments();
 
   const pendingLoansCount = loans.filter((loan) => loan.state === 'pending').length;
   const completedLoansCount = loans.filter((loan) => loan.state === 'completed').length;
 
   const cardData = [
-    { title: 'Total de Libros', content: '0', icon: <BookIcon /> },
-    { title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
-    { title: 'Préstamos Registrados', content: isLoading ? '0' : completedLoansCount.toString(), icon: <PlaylistAddCheckIcon /> },
-    { title: 'Préstamos Pendientes', content: isLoading ? '0' : pendingLoansCount.toString(), icon: <FormatListNumberedIcon /> },
+    { title: 'Total de Libros', content: documentsLoading ? '0' : documents.length.toString(), icon: <BookIcon /> },
+    //{ title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
+    { title: 'Préstamos Registrados', content: loansLoading ? '0' : completedLoansCount.toString(), icon: <PlaylistAddCheckIcon /> },
+    { title: 'Préstamos Pendientes', content: loansLoading ? '0' : pendingLoansCount.toString(), icon: <FormatListNumberedIcon /> },
   ];
 
   return (
