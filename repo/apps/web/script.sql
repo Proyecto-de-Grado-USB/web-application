@@ -20,5 +20,6 @@ INSERT INTO admin_users (name, email, password) VALUES
 ('Andres Camacho', 'user2@example.com', 'password2');
 
 INSERT INTO my_database.loans (document_id, user_id, expiration_date, state) VALUES
-('978-0-8231-7820-9', '1', '20/07/2024', 'pending'),
-('978-0-19-715402-1', '2', '20/07/2024', 'completed');
+('978-0-19-715402-3', '1', '20/07/2024', 'completed'),
+('978-0-8231-7820-9', '2', '20/07/2024', 'pending'),
+('978-0-19-715402-1', '3', '20/07/2024', 'completed');

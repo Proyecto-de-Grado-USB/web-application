@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { getAllLoans } from '../app/lib/data';
 
 interface Loan {
   document_id: string;
   user_id: string;
   expiration_date: string;
-  status: string;
+  state: string;
 }
 
 export function useLoans() {
@@ -18,7 +17,11 @@ export function useLoans() {
       setIsLoading(true);
       setError(null);
       try {
-        const data = await getAllLoans();
+        const response = await fetch('/api/loans');
+        if (!response.ok) {
+          throw new Error('Failed to fetch loans');
+        }
+        const data = await response.json();
         setLoans(data);
       } catch (err) {
         setError(err as Error);

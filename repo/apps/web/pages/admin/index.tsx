@@ -9,17 +9,22 @@ import BookIcon from '@mui/icons-material/Book';
 import PeopleIcon from '@mui/icons-material/People';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import { useLoans } from '@/hooks/useLoans';
 
 const defaultTheme = createTheme();
 
-const cardData = [
-  { title: 'Total de Libros', content: '0', icon: <BookIcon /> },
-  { title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
-  { title: 'Préstamos Registrados', content: '0', icon: <PlaylistAddCheckIcon /> },
-  { title: 'Préstamos Pendientes', content: '0', icon: <FormatListNumberedIcon /> },
-];
-
 export default function Page(): JSX.Element {
+  const { loans, isLoading, error } = useLoans();
+
+  const pendingLoansCount = loans.filter((loan) => loan.state === 'pending').length;
+  const completedLoansCount = loans.filter((loan) => loan.state === 'completed').length;
+
+  const cardData = [
+    { title: 'Total de Libros', content: '0', icon: <BookIcon /> },
+    { title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
+    { title: 'Préstamos Registrados', content: isLoading ? '0' : completedLoansCount.toString(), icon: <PlaylistAddCheckIcon /> },
+    { title: 'Préstamos Pendientes', content: isLoading ? '0' : pendingLoansCount.toString(), icon: <FormatListNumberedIcon /> },
+  ];
 
   return (
     <ThemeProvider theme={defaultTheme}>
