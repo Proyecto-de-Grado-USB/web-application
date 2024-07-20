@@ -48,3 +48,18 @@ export async function getAllLoans() {
     connection.release();
   }
 }
+
+export async function insertLoan(document_id: string, user_id: string, expiration_date: string, state: string) {
+  const connection = await pool.getConnection();
+  try {
+    await connection.execute(
+      'INSERT INTO loans (document_id, user_id, expiration_date, state) VALUES (?, ?, ?, ?)',
+      [document_id, user_id, expiration_date, state]
+    );
+  } catch (error) {
+    console.error('Error inserting loan:', error);
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
