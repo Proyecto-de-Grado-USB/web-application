@@ -5,14 +5,18 @@ import { Helmet } from 'react-helmet';
 import { Box, CssBaseline, ThemeProvider, createTheme, Grid } from '@mui/material';
 import AppBarWithDrawer from '@/components/AppBarWithDrawer';
 import CustomCard from '@/components/CustomCard';
+import BookIcon from '@mui/icons-material/Book';
+import PeopleIcon from '@mui/icons-material/People';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 
 const defaultTheme = createTheme();
 
 const cardData = [
-  { title: 'Card Title 1', content: 'Card Content 1', actionText: 'Action 1' },
-  { title: 'Card Title 2', content: 'Card Content 2', actionText: 'Action 2' },
-  { title: 'Card Title 3', content: 'Card Content 3', actionText: 'Action 3' },
-  { title: 'Card Title 4', content: 'Card Content 4', actionText: 'Action 4' },
+  { title: 'Total de Libros', content: '0', icon: <BookIcon /> },
+  { title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
+  { title: 'Préstamos Registrados', content: '0', icon: <PlaylistAddCheckIcon /> },
+  { title: 'Préstamos Pendientes', content: '0', icon: <FormatListNumberedIcon /> },
 ];
 
 export default function Page(): JSX.Element {
@@ -30,7 +34,7 @@ export default function Page(): JSX.Element {
           <Grid container spacing={3}>
             {cardData.map((card, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <CustomCard title={card.title} content={card.content} actionText={card.actionText} />
+                <CustomCard title={card.title} content={card.content} icon={card.icon}/>
               </Grid>
             ))}
           </Grid>
