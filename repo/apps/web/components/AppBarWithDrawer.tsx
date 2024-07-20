@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from 'pages/dashboard/listItems';
+import { useLoans } from '@/hooks/useLoans';
 
 const drawerWidth: number = 240;
 
@@ -62,6 +63,10 @@ export default function AppBarWithDrawer({ title }) {
     setOpen(!open);
   };
 
+  const { loans, isLoading, error } = useLoans();
+
+  const standbyLoansCount = loans.filter((loan) => loan.state === 'standby').length;
+
   return (
     <>
       <AppBar position="absolute" open={open}>
@@ -74,7 +79,7 @@ export default function AppBarWithDrawer({ title }) {
             {title}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={isLoading ? 4 : standbyLoansCount} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -90,7 +95,7 @@ export default function AppBarWithDrawer({ title }) {
         <List component="nav">
           {mainListItems}
           <Divider sx={{ my: 1 }} />
-          {false && secondaryListItems}
+          {secondaryListItems}
         </List>
       </Drawer>
     </>
