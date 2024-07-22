@@ -6,6 +6,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from 'pages/dashboard/listItems';
 import { useLoans } from '@/hooks/useLoans';
+import router from 'next/router';
 
 const drawerWidth: number = 240;
 
@@ -78,7 +79,7 @@ export default function AppBarWithDrawer({ title }) {
           <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1, fontWeight: "bold" }}>
             {title}
           </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => router.push('/loan')}>
             <Badge badgeContent={isLoading ? 4 : standbyLoansCount} color="secondary">
               <NotificationsIcon />
             </Badge>
@@ -95,7 +96,6 @@ export default function AppBarWithDrawer({ title }) {
         <List component="nav">
           {mainListItems}
           <Divider sx={{ my: 1 }} />
-          {secondaryListItems}
         </List>
       </Drawer>
     </>
