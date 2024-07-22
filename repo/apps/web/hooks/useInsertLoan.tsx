@@ -1,11 +1,5 @@
 import { useState } from 'react';
-
-interface Loan {
-  document_id: string;
-  user_id: string;
-  expiration_date: string;
-  state: string;
-}
+import { Loan } from './loanInterface';
 
 export function useInsertLoan() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +21,7 @@ export function useInsertLoan() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to insert loan');
+        throw new Error('No se pudo completar la solicitud.');
       }
 
       setSuccess(true);

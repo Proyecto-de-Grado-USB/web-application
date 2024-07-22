@@ -9,21 +9,43 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useInsertLoan } from '../hooks/useInsertLoan';
+import { Loan } from '@/hooks/loanInterface';
 
-function UserDetailsDialog({ open, onClose }) {
+function UserDetailsDialog({ open, onClose, selectedRow}) {
     const { insertLoan, isLoading, error, success } = useInsertLoan();
 
-    const [documentId, setDocumentId] = useState('');
     const [userId, setUserId] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
-    const [state, setState] = useState('');
+    const [userName, setUserName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [teacher, setTeacher] = useState('');
+    const [career, setCareer] = useState('');
+    const [regUniv, setRegUniv] = useState('');
 
     const handleInsertLoan = () => {
-        insertLoan({ document_id: documentId, user_id: userId, expiration_date: expirationDate, state });
-        if (!error && success) {
+        const loan: Loan = {
+          document_id: selectedRow.isbn,
+          user_id: userId,
+          expiration_date: expirationDate,
+          state: "standby",
+          user_name: userName,
+          phone: phone,
+          email: email,
+          teacher: teacher,
+          career: career,
+          reg_univ: regUniv,
+        };
+      
+        insertLoan(loan).then(() => {
+          if (!error && success) {
             onClose();
-        }
-    };
+          }
+        }).catch((error) => {
+          console.error("Error inserting loan:", error);
+        });
+      };
+      
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -45,16 +67,28 @@ function UserDetailsDialog({ open, onClose }) {
             <DialogContent>
                 <Grid container spacing={2} sx={{ mt: '1px' }}>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="Document ID" variant="outlined" fullWidth value={documentId} onChange={(e) => setDocumentId(e.target.value)} />
+                        <TextField label="Nombre Completo" variant="outlined" fullWidth value={userName} onChange={(e) => setUserName(e.target.value)} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="User ID" variant="outlined" fullWidth value={userId} onChange={(e) => setUserId(e.target.value)} />
+                        <TextField label="Carnet de Identidad" variant="outlined" fullWidth value={userId} onChange={(e) => setUserId(e.target.value)} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="Expiration Date" variant="outlined" fullWidth value={expirationDate} onChange={(e) => setExpirationDate(e.target.value)} />
+                        <TextField label="Teléfono" variant="outlined" fullWidth value={phone} onChange={(e) => setPhone(e.target.value)}/>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField label="State" variant="outlined" fullWidth value={state} onChange={(e) => setState(e.target.value)} />
+                        <TextField label="Correo Electrónico" variant="outlined" fullWidth value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField label="Docente" variant="outlined" fullWidth value={teacher} onChange={(e) => setTeacher(e.target.value)}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField label="Carrera" variant="outlined" fullWidth value={career} onChange={(e) => setCareer(e.target.value)}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField label="Reg. Univ." variant="outlined" fullWidth value={regUniv} onChange={(e) => setRegUniv(e.target.value)}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField label="Fecha de Devolución" variant="outlined" fullWidth value={expirationDate} onChange={(e) => setExpirationDate(e.target.value)} />
                     </Grid>
                 </Grid>
                 {error && <p style={{ color: 'red' }}>{error.message}</p>}

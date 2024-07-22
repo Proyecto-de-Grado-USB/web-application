@@ -1,5 +1,6 @@
 import * as mysql from 'mysql2/promise';
 import * as dotenv from 'dotenv';
+import { Loan } from '@/hooks/loanInterface';
 
 dotenv.config({ path: '.env.local' });
 
@@ -49,12 +50,12 @@ export async function getAllLoans() {
   }
 }
 
-export async function insertLoan(document_id: string, user_id: string, expiration_date: string, state: string) {
+export async function insertLoan(loan: Loan) {
   const connection = await pool.getConnection();
   try {
     await connection.execute(
-      'INSERT INTO loans (document_id, user_id, expiration_date, state) VALUES (?, ?, ?, ?)',
-      [document_id, user_id, expiration_date, state]
+      'INSERT INTO loans (document_id, user_id, expiration_date, state, user_name, phone, email, teacher, career, reg_univ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [loan.document_id, loan.user_id, loan.expiration_date, loan.state, loan.user_name, loan.phone, loan.email, loan.teacher, loan.career, loan.reg_univ]
     );
   } catch (error) {
     console.error('Error inserting loan:', error);

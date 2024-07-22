@@ -119,6 +119,7 @@ export default function RegistryDataGrid({
         <UserDetailsDialog
           open={userDetailsOpen}
           onClose={() => setUserDetailsOpen(false)}
+          selectedRow={selectedRow}
         />
         <UpdateDocumentDialog
           open={updateDialogOpen}
