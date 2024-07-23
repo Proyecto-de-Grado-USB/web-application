@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import AppBarWithDrawer from '@/components/AppBarWithDrawer';
+import LoanTable from '@/components/LoanTable';
 
 const defaultTheme = createTheme();
 
@@ -19,7 +20,7 @@ export default function Page(): JSX.Element {
           <Helmet>
             <title>Préstamo de Documentos</title>
           </Helmet>
-          Loan
+          <LoanTable/>
         </Box>
       </Box>
     </ThemeProvider>

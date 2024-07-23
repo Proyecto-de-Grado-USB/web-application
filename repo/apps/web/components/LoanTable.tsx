@@ -1,12 +1,24 @@
-// LoanTable.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useLoans } from '@/hooks/useLoans';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert
 } from '@mui/material';
+import LoanDetailsDialog from '../components/LoanDetailsDialog';
 
 const LoanTable: React.FC = () => {
   const { loans, isLoading, error } = useLoans();
+  const [selectedLoan, setSelectedLoan] = useState(null);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const handleRowClick = (loan) => {
+    setSelectedLoan(loan);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedLoan(null);
+  };
 
   if (isLoading) {
     return <CircularProgress />;
@@ -17,40 +29,31 @@ const LoanTable: React.FC = () => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Document ID</TableCell>
-            <TableCell>User ID</TableCell>
-            <TableCell>Expiration Date</TableCell>
-            <TableCell>State</TableCell>
-            <TableCell>User Name</TableCell>
-            <TableCell>Phone</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Teacher</TableCell>
-            <TableCell>Career</TableCell>
-            <TableCell>Reg Univ</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loans.map((loan) => (
-            <TableRow key={loan.document_id}>
-              <TableCell>{loan.document_id}</TableCell>
-              <TableCell>{loan.user_id}</TableCell>
-              <TableCell>{loan.expiration_date}</TableCell>
-              <TableCell>{loan.state}</TableCell>
-              <TableCell>{loan.user_name}</TableCell>
-              <TableCell>{loan.phone}</TableCell>
-              <TableCell>{loan.email}</TableCell>
-              <TableCell>{loan.teacher}</TableCell>
-              <TableCell>{loan.career}</TableCell>
-              <TableCell>{loan.reg_univ}</TableCell>
+    <>
+      <TableContainer component={Paper} sx={{ mt: '100px' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Document ID</TableCell>
+              <TableCell>User ID</TableCell>
+              <TableCell>Expiration Date</TableCell>
+              <TableCell>State</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {loans.map((loan) => (
+              <TableRow key={loan.document_id} onClick={() => handleRowClick(loan)} style={{ cursor: 'pointer' }}>
+                <TableCell>{loan.document_id}</TableCell>
+                <TableCell>{loan.user_id}</TableCell>
+                <TableCell>{loan.expiration_date}</TableCell>
+                <TableCell>{loan.state}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <LoanDetailsDialog open={isDialogOpen} onClose={handleCloseDialog} selectedRow={selectedLoan} />
+    </>
   );
 };
 
