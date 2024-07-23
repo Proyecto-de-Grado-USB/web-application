@@ -20,7 +20,9 @@ export default function Page(): JSX.Element {
           <Helmet>
             <title>Préstamo de Documentos</title>
           </Helmet>
-          <LoanTable/>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <LoanTable/>
+          </div>
         </Box>
       </Box>
     </ThemeProvider>

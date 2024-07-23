@@ -10,11 +10,13 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
   const renderRowDetails = (row) => {
-    return Object.entries(row).map(([key, value]) => (
-      <DialogContentText key={key} component="div">
-        <strong>{`${key}:`}</strong> {value}
-      </DialogContentText>
-    ));
+    return Object.entries(row)
+      .filter(([key]) => key !== "loan_id")
+      .map(([key, value]) => (
+        <DialogContentText key={key} component="div">
+          <strong>{`${key}:`}</strong> {value}
+        </DialogContentText>
+      ));
   };
 
   return (

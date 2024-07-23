@@ -30,7 +30,7 @@ const LoanTable: React.FC = () => {
 
   return (
     <>
-      <TableContainer component={Paper} sx={{ mt: '100px' }}>
+      <TableContainer component={Paper} sx={{ mt: '100px', width: '80%', maxHeight: '530px'}}>
         <Table>
           <TableHead>
             <TableRow>
