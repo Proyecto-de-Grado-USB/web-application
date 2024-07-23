@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-
-interface Loan {
-  document_id: string;
-  user_id: string;
-  expiration_date: string;
-  state: string;
-}
+import { Loan } from './loanInterface';
 
 export function useLoans() {
   const [loans, setLoans] = useState<Loan[]>([]);
