@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,6 +7,11 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import { useUpdateState } from '@/hooks/useUpdateState';
 
 const headerMap = {
   document_id: 'ISBN',
@@ -22,6 +27,22 @@ const headerMap = {
 };
 
 const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
+  const { updateState, isLoading, error, success } = useUpdateState();
+  const [newState, setNewState] = useState(selectedRow ? selectedRow.state : '');
+
+  const handleStateChange = (event) => {
+    setNewState(event.target.value);
+  };
+
+  const handleUpdateState = async () => {
+    if (selectedRow && selectedRow.loan_id) {
+      await updateState(selectedRow.loan_id, newState);
+      if (success) {
+        onClose();
+      }
+    }
+  };
+
   const renderRowDetails = (row) => {
     return Object.entries(row)
       .filter(([key]) => key !== "loan_id")
@@ -51,10 +72,23 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
       </DialogTitle>
       <DialogContent>
         {selectedRow && renderRowDetails(selectedRow)}
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="state-label">Estado</InputLabel>
+          <Select
+            labelId="state-label"
+            value={newState}
+            onChange={handleStateChange}
+          >
+            <MenuItem value="standby">En Espera</MenuItem>
+            <MenuItem value="pending">Pendiente</MenuItem>
+            <MenuItem value="completed">Completado</MenuItem>
+          </Select>
+        </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cerrar</Button>
+        <Button onClick={handleUpdateState} disabled={isLoading}>Actualizar</Button>
       </DialogActions>
+      {error && <DialogContentText color="error">{error.message}</DialogContentText>}
     </Dialog>
   );
 };

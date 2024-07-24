@@ -64,3 +64,19 @@ export async function insertLoan(loan: Loan) {
     connection.release();
   }
 }
+
+export async function patchLoanState(loanId: number, newState: string) {
+  const connection = await pool.getConnection();
+  try {
+    const [result] = await connection.execute(
+      'UPDATE loans SET state = ? WHERE loan_id = ?',
+      [newState, loanId]
+    );
+    return result;
+  } catch (error) {
+    console.error('Error updating loan state:', error);
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
