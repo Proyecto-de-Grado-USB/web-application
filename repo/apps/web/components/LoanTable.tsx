@@ -20,6 +20,19 @@ const LoanTable: React.FC = () => {
     setSelectedLoan(null);
   };
 
+  const translateState = (state) => {
+    switch (state) {
+      case 'standby':
+        return 'En Espera';
+      case 'pending':
+        return 'Pendiente';
+      case 'completed':
+        return 'Completado';
+      default:
+        return state;
+    }
+  };
+
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -34,10 +47,10 @@ const LoanTable: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Document ID</TableCell>
-              <TableCell>User ID</TableCell>
-              <TableCell>Expiration Date</TableCell>
-              <TableCell>State</TableCell>
+              <TableCell>ISBN</TableCell>
+              <TableCell>Carnet de Identidad</TableCell>
+              <TableCell>Fecha de Expiración</TableCell>
+              <TableCell>Estado</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -46,7 +59,7 @@ const LoanTable: React.FC = () => {
                 <TableCell>{loan.document_id}</TableCell>
                 <TableCell>{loan.user_id}</TableCell>
                 <TableCell>{loan.expiration_date}</TableCell>
-                <TableCell>{loan.state}</TableCell>
+                <TableCell>{translateState(loan.state)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

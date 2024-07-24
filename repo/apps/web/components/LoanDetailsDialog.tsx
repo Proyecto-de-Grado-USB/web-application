@@ -8,13 +8,26 @@ import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
+const headerMap = {
+  document_id: 'ISBN',
+  user_id: 'Carnet de Identidad',
+  expiration_date: 'Fecha de Expiración',
+  state: 'Estado',
+  user_name: 'Nombre de Usuario',
+  phone: 'Teléfono',
+  email: 'Correo Electrónico',
+  teacher: 'Docente',
+  career: 'Carrera',
+  reg_univ: 'Registro Universitario',
+};
+
 const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
   const renderRowDetails = (row) => {
     return Object.entries(row)
       .filter(([key]) => key !== "loan_id")
       .map(([key, value]) => (
         <DialogContentText key={key} component="div">
-          <strong>{`${key}:`}</strong> {value}
+          <strong>{`${headerMap[key] || key}:`}</strong> {value}
         </DialogContentText>
       ));
   };
