@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import { useUpdateState } from '@/hooks/useUpdateState';
 
 const headerMap = {
@@ -28,20 +25,21 @@ const headerMap = {
 
 const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
   const { updateState, isLoading, error, success } = useUpdateState();
-  const [newState, setNewState] = useState(selectedRow ? selectedRow.state : '');
+  const [newState, setNewState] = useState('');
 
-  const handleStateChange = (event) => {
-    setNewState(event.target.value);
-  };
-
-  const handleUpdateState = async () => {
+  const handleStateChange = async (event) => {
+    const updatedState = event.target.value;
+    setNewState(updatedState);
     if (selectedRow && selectedRow.loan_id) {
-      await updateState(selectedRow.loan_id, newState);
-      if (success) {
-        onClose();
-      }
+      await updateState(selectedRow.loan_id, updatedState);
     }
   };
+
+  useEffect(() => {
+    if (open) {
+      setNewState('');
+    }
+  }, [open]);
 
   const renderRowDetails = (row) => {
     return Object.entries(row)
@@ -72,12 +70,13 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
       </DialogTitle>
       <DialogContent>
         {selectedRow && renderRowDetails(selectedRow)}
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="state-label">Estado</InputLabel>
+        <FormControl margin="normal" sx={{ minWidth: 140, float: 'right' }}>
           <Select
             labelId="state-label"
             value={newState}
             onChange={handleStateChange}
+            disabled={isLoading}
+            sx={{ height: 40 }}
           >
             <MenuItem value="standby">En Espera</MenuItem>
             <MenuItem value="pending">Pendiente</MenuItem>
@@ -85,9 +84,6 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
           </Select>
         </FormControl>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleUpdateState} disabled={isLoading}>Actualizar</Button>
-      </DialogActions>
       {error && <DialogContentText color="error">{error.message}</DialogContentText>}
     </Dialog>
   );
