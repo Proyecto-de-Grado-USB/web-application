@@ -72,12 +72,15 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
         {selectedRow && renderRowDetails(selectedRow)}
         <FormControl margin="normal" sx={{ minWidth: 140, float: 'right' }}>
           <Select
-            labelId="state-label"
             value={newState}
             onChange={handleStateChange}
             disabled={isLoading}
+            displayEmpty
             sx={{ height: 40 }}
           >
+            <MenuItem value="" disabled>
+              Estado
+            </MenuItem>
             <MenuItem value="standby">En Espera</MenuItem>
             <MenuItem value="pending">Pendiente</MenuItem>
             <MenuItem value="completed">Completado</MenuItem>
