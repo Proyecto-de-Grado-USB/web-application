@@ -9,6 +9,7 @@ import useSearchDocuments from '@/hooks/useSearch';
 import useInsert from '@/hooks/useInsert';
 import { Box, Button, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { SxProps } from '@mui/system';
+import UpdateDocumentDialog from '@/components/UpdateDocumentDialog';
 
 const defaultTheme = createTheme();
 
@@ -20,6 +21,8 @@ const gridStyles: SxProps = {
 
 export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
   const { insertDocument } = useInsert();
@@ -44,30 +47,20 @@ export default function Page(): JSX.Element {
     dimensions: doc._source.dimensions || `Dimensions ${index + 1}`,
     subject: doc._source.subject || `Subject ${index + 1}`,
     notes: doc._source.notes || `Notes ${index + 1}`,
-}));
+  }));
 
-  const documentToSend = {
-    id: 0,
-    location: "1Location",
-    title: "Magic Book",
-    author: "Quique Almansa-Aguiló",
-    publisher: "Lillo, Marti and Viana",
-    year: "1997",
-    city: "Valladolid",
-    country: "Sierra Leona",
-    edition: "impedit",
-    format: "documento",
-    isbn: "978-0-8231-7820-9",
-    language: "Ewé",
-    pages: 357,
-    dimensions: "30x18 cm",
-    subject: "800 – Literatura",
-    notes: "Edición revisada y ampliada."
+  const handleAddDocumentClick = () => {
+    setSelectedRow(null);
+    setDialogOpen(true);
   };
 
-  const handleAddDocument = async () => {
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleInsertDocument = async (document) => {
     try {
-      await insertDocument(documentToSend);
+      await insertDocument(document);
       alert('Se añadió el documento.');
     } catch (error) {
       console.error('Error adding document:', error);
@@ -93,12 +86,18 @@ export default function Page(): JSX.Element {
           <Helmet>
             <title>Gestión de Documentos</title>
           </Helmet>
-          <Button variant="contained" onClick={handleAddDocument} sx={{ml: '175px', mt: '100px'}}>Agregar</Button>
+          <Button variant="contained" onClick={handleAddDocumentClick} sx={{ml: '175px', mt: '100px'}}>Agregar</Button>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={false}/>
           </div>
         </Box>
       </Box>
+      <UpdateDocumentDialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        selectedRow={selectedRow}
+        onInsert={handleInsertDocument}
+      />
     </ThemeProvider>
   );
 }

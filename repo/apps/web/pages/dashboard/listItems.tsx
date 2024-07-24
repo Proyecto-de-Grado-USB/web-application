@@ -16,7 +16,7 @@ export const mainListItems = (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Inicio" onClick={() => router.push('/dashboard')}/>
+      <ListItemText primary="Inicio" onClick={() => router.push('/admin')}/>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
@@ -28,13 +28,13 @@ export const mainListItems = (
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Métricas" />
+      <ListItemText primary="Métricas" onClick={() => router.push('/dashboard')}/>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText primary="Préstamos" />
+      <ListItemText primary="Préstamos" onClick={() => router.push('/loan')}/>
     </ListItemButton>
   </React.Fragment>
 );

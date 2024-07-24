@@ -82,7 +82,7 @@ export default function SignIn() {
       setMessage("Acceso Concedido");
       setSeverity("success");
       setOpen(true);
-      router.push("/dashboard");
+      router.push("/admin");
     }
   };
 

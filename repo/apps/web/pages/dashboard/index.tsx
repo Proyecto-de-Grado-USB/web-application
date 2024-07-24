@@ -37,7 +37,7 @@ export default function Dashboard() {
   return (
     <>
       <Helmet>
-        <title>Panel</title>
+        <title>Panel Administrativo</title>
       </Helmet>
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex" }}>
