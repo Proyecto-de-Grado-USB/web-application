@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const moment = require('moment-timezone');
 const { render } = require('ejs');
 const Search = require('./search');
 
@@ -30,7 +31,7 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
-    const start_time = new Date();
+    const start_time = moment().tz('America/La_Paz');
     const query = req.body.query || '';
     const { filters, parsed_query } = extractFilters(query);
     const from_ = parseInt(req.body.from_) || 0;
@@ -52,12 +53,12 @@ app.post('/', async (req, res) => {
             from: from_,
         });
 
-        const end_time = new Date();
-        const response_time = end_time - start_time;
+        const end_time = moment().tz('America/La_Paz');
+        const response_time = end_time.diff(start_time, 'milliseconds');
         console.log(`Response time: ${response_time} milliseconds`);
 
         const actionType = 'search';
-        const actionDate = new Date().toISOString();
+        const actionDate = end_time.format();
         await fetch('http://localhost:3001/api/activities', {
             method: 'POST',
             headers: {

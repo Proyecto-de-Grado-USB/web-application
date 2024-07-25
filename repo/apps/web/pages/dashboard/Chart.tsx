@@ -23,7 +23,7 @@ export default function Chart() {
 
         const filteredActivities = activities.filter((activity: { action_type: string }) => activity.action_type === 'search');
 
-        const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         const activityCountByDay: { [key: string]: number } = {};
 
         daysOfWeek.forEach(day => {
