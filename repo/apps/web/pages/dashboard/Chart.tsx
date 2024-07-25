@@ -4,7 +4,6 @@ import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import Title from './Title';
 
-// Generate Sales Data
 function createData(
   time: string,
   amount?: number,
@@ -13,15 +12,13 @@ function createData(
 }
 
 const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00'),
+  createData('Lunes', 0),
+  createData('Martes', 15),
+  createData('Miércoles', 32),
+  createData('Jueves', 35),
+  createData('Viernes', 55),
+  createData('Sábado', 73),
+  createData('Domingo', 94),
 ];
 
 export default function Chart() {
@@ -29,7 +26,7 @@ export default function Chart() {
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Consultas de Búsqueda - Semana</Title>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
           dataset={data}
@@ -49,14 +46,14 @@ export default function Chart() {
           ]}
           yAxis={[
             {
-              label: 'Sales ($)',
+              label: 'Consultas',
               labelStyle: {
                 ...(theme.typography.body1 as ChartsTextStyle),
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 2500,
-              tickNumber: 3,
+              max: 100,
+              tickNumber: 5,
             },
           ]}
           series={[
