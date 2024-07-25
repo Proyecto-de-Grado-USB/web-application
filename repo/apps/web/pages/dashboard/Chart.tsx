@@ -11,18 +11,43 @@ function createData(
   return { time, amount: amount ?? null };
 }
 
-const data = [
-  createData('Lunes', 0),
-  createData('Martes', 15),
-  createData('Miércoles', 32),
-  createData('Jueves', 35),
-  createData('Viernes', 55),
-  createData('Sábado', 73),
-  createData('Domingo', 94),
-];
-
 export default function Chart() {
   const theme = useTheme();
+  const [data, setData] = React.useState<{ time: string; amount: number | null }[]>([]);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:3001/api/activities');
+        const activities = await response.json();
+
+        const filteredActivities = activities.filter((activity: { action_type: string }) => activity.action_type === 'search');
+
+        const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const activityCountByDay: { [key: string]: number } = {};
+
+        daysOfWeek.forEach(day => {
+          activityCountByDay[day] = 0;
+        });
+
+        filteredActivities.forEach((activity: { action_date: string }) => {
+          const date = new Date(activity.action_date);
+          const day = daysOfWeek[date.getDay()];
+          if (day) {
+            activityCountByDay[day] += 1;
+          }
+        });
+
+        const chartData = daysOfWeek.map(day => createData(day, activityCountByDay[day]));
+        setData(chartData);
+
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
