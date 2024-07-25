@@ -80,3 +80,18 @@ export async function patchLoanState(loanId: number, newState: string) {
     connection.release();
   }
 }
+
+export async function insertActivity(actionType: string, actionDate: string) {
+  const connection = await pool.getConnection();
+  try {
+    await connection.execute(
+      'INSERT INTO activity (action_type, action_date) VALUES (?, ?)',
+      [actionType, actionDate]
+    );
+  } catch (error) {
+    console.error('Error inserting activity:', error);
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
