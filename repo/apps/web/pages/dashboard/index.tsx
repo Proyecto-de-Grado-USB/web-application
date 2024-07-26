@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Chart from "./Chart";
-import Deposits from "./Deposits";
+import Card from "./MetricsCard";
 import Orders from "./Orders";
 import { Helmet } from "react-helmet";
 import AppBarWithDrawer from "@/components/AppBarWithDrawer";
@@ -64,7 +64,7 @@ export default function Dashboard() {
                 {/* Recent Deposits */}
                 <Grid item xs={12} md={4} lg={3}>
                   <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 240 }}>
-                    <Deposits />
+                    <Card />
                   </Paper>
                 </Grid>
                 {/* Recent Orders */}
