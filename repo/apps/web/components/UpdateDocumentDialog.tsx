@@ -74,7 +74,7 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
     onClose();
   };
 
-  const insertAction = async (actionType: string) =>  {
+  const insertAction = async (actionType: string) => {
     const date = moment().tz('America/La_Paz');
     const actionDate = date.format();
     await fetch('http://localhost:3001/api/activities', {
@@ -84,10 +84,11 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
       },
       body: JSON.stringify({ action_type: actionType, action_date: actionDate })
     });
-  }
+  };
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this document?')) {
+      await insertAction("delete");
       if (await deleteDocument(selectedRow.id)) {
         alert('El documento se eliminó.');
       }
