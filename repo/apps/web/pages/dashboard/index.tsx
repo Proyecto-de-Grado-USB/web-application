@@ -15,24 +15,6 @@ import LoansPieChart from "@/components/LoansPieChart";
 
 const defaultTheme = createTheme();
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Derechos de Autor © "}
-      <Link color="inherit" href="http://crai.usalesiana.edu.bo/">
-        Universidad Salesiana de Bolivia
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 export default function Dashboard() {
   return (
     <>
@@ -89,7 +71,6 @@ export default function Dashboard() {
                   </Paper>
                 </Grid>
               </Grid>
-              <Copyright sx={{ pt: 4 }} />
             </Container>
           </Box>
         </Box>
