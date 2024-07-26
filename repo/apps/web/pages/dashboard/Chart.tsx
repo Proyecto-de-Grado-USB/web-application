@@ -4,7 +4,6 @@ import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import Title from './Title';
 
-// Generate Sales Data
 function createData(
   time: string,
   amount?: number,
@@ -12,24 +11,47 @@ function createData(
   return { time, amount: amount ?? null };
 }
 
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00'),
-];
-
 export default function Chart() {
   const theme = useTheme();
+  const [data, setData] = React.useState<{ time: string; amount: number | null }[]>([]);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:3001/api/activities');
+        const activities = await response.json();
+
+        const filteredActivities = activities.filter((activity: { action_type: string }) => activity.action_type === 'search');
+
+        const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const activityCountByDay: { [key: string]: number } = {};
+
+        daysOfWeek.forEach(day => {
+          activityCountByDay[day] = 0;
+        });
+
+        filteredActivities.forEach((activity: { action_date: string }) => {
+          const date = new Date(activity.action_date);
+          const day = daysOfWeek[date.getDay()];
+          if (day) {
+            activityCountByDay[day] += 1;
+          }
+        });
+
+        const chartData = daysOfWeek.map(day => createData(day, activityCountByDay[day]));
+        setData(chartData);
+
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Consultas de Búsqueda - Semana</Title>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
           dataset={data}
@@ -49,14 +71,14 @@ export default function Chart() {
           ]}
           yAxis={[
             {
-              label: 'Sales ($)',
+              label: 'Consultas',
               labelStyle: {
                 ...(theme.typography.body1 as ChartsTextStyle),
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 2500,
-              tickNumber: 3,
+              max: 100,
+              tickNumber: 5,
             },
           ]}
           series={[

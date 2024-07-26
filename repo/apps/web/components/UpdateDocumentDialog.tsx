@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
 import useUpdate from '@/hooks/useUpdate';
 import useDelete from '@/hooks/useDelete';
+import moment from 'moment-timezone';
 
 const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
   const [formData, setFormData] = useState({});
@@ -62,17 +63,32 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
 
   const handleUpdate = async () => {
     if (selectedRow) {
+      await insertAction("modify");
       if (await updateDocument(selectedRow.id, formData)) {
         alert('El documento se actualizó.');
       }
     } else {
+      await insertAction("insert");
       await onInsert(formData);
     }
     onClose();
   };
 
+  const insertAction = async (actionType: string) => {
+    const date = moment().tz('America/La_Paz');
+    const actionDate = date.format();
+    await fetch('http://localhost:3001/api/activities', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action_type: actionType, action_date: actionDate })
+    });
+  };
+
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this document?')) {
+      await insertAction("delete");
       if (await deleteDocument(selectedRow.id)) {
         alert('El documento se eliminó.');
       }
