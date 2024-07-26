@@ -6,7 +6,12 @@ import Typography from '@mui/material/Typography';
 import Title from './Title';
 import moment from 'moment-timezone';
 
-export default function Card() {
+interface CardProps {
+  title: string;
+  activityType: string;
+}
+
+export default function Card({ title, activityType }: CardProps) {
   const [view, setView] = React.useState('day');
   const [count, setCount] = React.useState(0);
 
@@ -28,17 +33,17 @@ export default function Card() {
         switch (view) {
           case 'day':
             filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
-              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'day')
+              activity.action_type === activityType && moment(activity.action_date).isSame(date, 'day')
             );
             break;
           case 'month':
             filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
-              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'month')
+              activity.action_type === activityType && moment(activity.action_date).isSame(date, 'month')
             );
             break;
           case 'year':
             filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
-              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'year')
+              activity.action_type === activityType && moment(activity.action_date).isSame(date, 'year')
             );
             break;
           default:
@@ -67,7 +72,7 @@ export default function Card() {
           textAlign: 'center',
         }}
       >
-        <Title>Documentos Añadidos</Title>
+        <Title>{title}</Title>
         <Typography component="p" variant="h2" marginTop={0.5}>
           {count}
         </Typography>
