@@ -22,10 +22,28 @@ export default function Card() {
         const response = await fetch('http://localhost:3001/api/activities');
         const activities = await response.json();
 
-        const date = moment().tz('America/La_Paz').format('YYYY-MM-DD');
-        const filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
-          activity.action_type === 'modify' && activity.action_date.startsWith(date)
-        );
+        const date = moment().tz('America/La_Paz');
+        let filteredActivities;
+
+        switch (view) {
+          case 'day':
+            filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
+              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'day')
+            );
+            break;
+          case 'month':
+            filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
+              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'month')
+            );
+            break;
+          case 'year':
+            filteredActivities = activities.filter((activity: { action_type: string, action_date: string }) => 
+              activity.action_type === 'modify' && moment(activity.action_date).isSame(date, 'year')
+            );
+            break;
+          default:
+            filteredActivities = [];
+        }
 
         setCount(filteredActivities.length);
 
@@ -35,7 +53,7 @@ export default function Card() {
     }
 
     fetchData();
-  }, []);
+  }, [view]);
 
   return (
     <React.Fragment>
