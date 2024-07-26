@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import AppBarWithDrawer from "@/components/AppBarWithDrawer";
 import Typography from "@mui/material/Typography";
 import { Link } from "@mui/material";
+import LoansPieChart from "@/components/LoansPieChart";
 
 const defaultTheme = createTheme();
 
@@ -83,13 +84,8 @@ export default function Dashboard() {
                   </Paper>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
-                  <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 240 }}>
-                    <Card title="Estado de los Préstamos" activityType="review" />
-                  </Paper>
-                </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                  <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 240 }}>
-                    <Card title="Préstamos Únicos y Totales" activityType="modify_today" />
+                  <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 300 }}>
+                    <LoansPieChart />
                   </Paper>
                 </Grid>
               </Grid>
