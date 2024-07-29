@@ -27,6 +27,10 @@ class Search {
                             elser_embedding: {
                                 type: 'sparse_vector'
                             }
+                        },
+                        title: {
+                            type: 'text',
+                            analyzer: 'spanish'
                         }
                     },
                     settings: {

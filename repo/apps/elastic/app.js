@@ -79,6 +79,36 @@ app.post('/', async (req, res) => {
     }
 });
 
+app.post('/semantic-search', async (req, res) => {
+    const query = req.body.query || '';
+    const from_ = parseInt(req.body.from_) || 0;
+
+    try {
+        const results = await es.search({
+            query: {
+                text_expansion: {
+                    elser_embedding: {
+                        model_id: '.elser_model_2',
+                        model_text: query
+                    }
+                }
+            },
+            size: 10,
+            from: from_
+        });
+
+        res.json({
+            results: results.hits.hits,
+            query,
+            from: from_,
+            total: results.hits.total.value
+        });
+    } catch (error) {
+        console.error('Error handling semantic search:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.post('/document', async (req, res) => {
     const document = req.body;
     try {
