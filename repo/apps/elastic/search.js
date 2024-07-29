@@ -7,7 +7,7 @@ class Search {
     constructor() {
         this.client = new Client({
             node: 'http://localhost:9200'
-          });
+        });
         this.client.info()
             .then(response => {
                 console.log('Connected to Elasticsearch!');
@@ -19,11 +19,71 @@ class Search {
     async createIndex() {
         try {
             await this.client.indices.delete({ index: 'my_documents', ignore_unavailable: true });
-            await this.client.indices.create({ index: 'my_documents' });
+            await this.client.indices.create({
+                index: 'my_documents',
+                body: {
+                    mappings: {
+                        properties: {
+                            embedding: {
+                                type: 'dense_vector'
+                            },
+                            elser_embedding: {
+                                type: 'sparse_vector'
+                            }
+                        }
+                    }
+                }
+            });
+            console.log('Index created successfully with custom mappings.');
         } catch (error) {
             console.error('Error creating index:', error);
         }
     }
+
+    async deployElser() {
+        try {
+            await this.client.ml.putTrainedModel({
+                model_id: '.elser_model_2',
+                input: { field_names: ['text_field'] }
+            });
+    
+            while (true) {
+                const status = await this.client.ml.getTrainedModels({
+                    model_id: '.elser_model_2',
+                    include: 'definition_status'
+                });
+                if (status.trained_model_configs[0].fully_defined) {
+                    break;
+                }
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+            }
+    
+            await this.client.ml.startTrainedModelDeployment({
+                model_id: '.elser_model_2'
+            });
+    
+            await this.client.ingest.putPipeline({
+                id: 'elser-ingest-pipeline',
+                body: {
+                    processors: [
+                        {
+                            inference: {
+                                model_id: '.elser_model_2',
+                                field_map: {
+                                    'title': 'text_field'
+                                },
+                                target_field: 'elser_embedding'
+                            }
+                        }
+                    ]
+                }
+            });
+    
+            console.log('ELSER model deployed and pipeline created successfully.');
+        } catch (error) {
+            console.error('Error deploying ELSER model:', error);
+        }
+    }    
 
     async insertDocument(document) {
         try {

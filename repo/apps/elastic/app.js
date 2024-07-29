@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
         });
   
         res.json({
-          documents: allDocuments.hits.hits
+            documents: allDocuments.hits.hits
         });
     } catch (error) {
         console.error('Error retrieving all documents:', error);
@@ -104,13 +104,23 @@ app.get('/document/:id', async (req, res) => {
 });
 
 app.post('/reindex', async (req, res) => {
-  try {
-      await es.reindex();
-      res.send('Indexing completed successfully.');
-  } catch (error) {
-      console.error('Error reindexing:', error);
-      res.status(500).send('Error reindexing.');
-  }
+    try {
+        await es.reindex();
+        res.send('Indexing completed successfully.');
+    } catch (error) {
+        console.error('Error reindexing:', error);
+        res.status(500).send('Error reindexing.');
+    }
+});
+
+app.post('/deploy-elser', async (req, res) => {
+    try {
+        await es.deployElser();
+        res.send('ELSER model deployed and pipeline created successfully.');
+    } catch (error) {
+        console.error('Error deploying ELSER model:', error);
+        res.status(500).send('Error deploying ELSER model.');
+    }
 });
 
 app.delete('/document/:id', async (req, res) => {
