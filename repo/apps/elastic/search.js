@@ -24,21 +24,23 @@ class Search {
                 body: {
                     mappings: {
                         properties: {
-                            embedding: {
-                                type: 'dense_vector'
-                            },
                             elser_embedding: {
                                 type: 'sparse_vector'
                             }
                         }
+                    },
+                    settings: {
+                        index: {
+                            default_pipeline: 'elser-ingest-pipeline'
+                        }
                     }
                 }
             });
-            console.log('Index created successfully with custom mappings.');
+            console.log('Index created successfully with custom mappings and settings.');
         } catch (error) {
             console.error('Error creating index:', error);
         }
-    }
+    }    
 
     async deployElser() {
         try {
@@ -55,7 +57,7 @@ class Search {
                 if (status.trained_model_configs[0].fully_defined) {
                     break;
                 }
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
+                await new Promise(resolve => setTimeout(resolve, 10000));
             }
     
             await this.client.ml.startTrainedModelDeployment({
@@ -69,10 +71,12 @@ class Search {
                         {
                             inference: {
                                 model_id: '.elser_model_2',
-                                field_map: {
-                                    'title': 'text_field'
-                                },
-                                target_field: 'elser_embedding'
+                                input_output: [ 
+                                    {
+                                      input_field: 'title',
+                                      output_field: 'elser_embedding'
+                                    }
+                                  ]
                             }
                         }
                     ]
