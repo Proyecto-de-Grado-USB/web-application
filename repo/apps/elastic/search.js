@@ -26,11 +26,11 @@ class Search {
                         properties: {
                             elser_embedding: {
                                 type: 'sparse_vector'
+                            },
+                            title: {
+                                type: 'text',
+                                analyzer: 'spanish'
                             }
-                        },
-                        title: {
-                            type: 'text',
-                            analyzer: 'spanish'
                         }
                     },
                     settings: {
@@ -44,7 +44,7 @@ class Search {
         } catch (error) {
             console.error('Error creating index:', error);
         }
-    }    
+    }     
 
     async deployElser() {
         try {
