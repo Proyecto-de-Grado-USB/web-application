@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import Switch from '@mui/material/Switch';
 import router from "next/router";
 
 const Search = styled('div')(({ theme }) => ({
@@ -51,19 +52,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 interface SearchAppBarProps {
   setQuery: (query: string) => void;
+  useSemantic: boolean;
+  setUseSemantic: (useSemantic: boolean) => void;
 }
 
-export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
-  const [query, setLocalQuery] = React.useState('');
+export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: SearchAppBarProps) {
+  const [localQuery, setLocalQuery] = React.useState('');
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setQuery(query);
+      setQuery(localQuery);
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocalQuery(event.target.value);
+  };
+
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUseSemantic(event.target.checked);
   };
 
   return (
@@ -104,9 +111,13 @@ export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              value={query}
+              value={localQuery}
             />
           </Search>
+          <Typography variant="body1" sx={{ ml: 2 }}>
+            Semantic Search
+          </Typography>
+          <Switch checked={useSemantic} onChange={handleToggleChange} />
         </Toolbar>
       </AppBar>
     </Box>

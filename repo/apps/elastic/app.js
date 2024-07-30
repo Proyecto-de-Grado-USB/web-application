@@ -49,7 +49,7 @@ app.post('/', async (req, res) => {
                     ...filters,
                 },
             },
-            size: 10,
+            size: 4000,
             from: from_,
         });
 
@@ -93,7 +93,7 @@ app.post('/semantic-search', async (req, res) => {
                     }
                 }
             },
-            size: 10,
+            size: 4000,
             from: from_
         });
 
