@@ -54,8 +54,16 @@ interface SearchAppBarProps {
 }
 
 export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
+  const [query, setLocalQuery] = React.useState('');
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setQuery(query);
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setLocalQuery(event.target.value);
   };
 
   return (
@@ -95,6 +103,8 @@ export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
               placeholder="Buscar…"
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              value={query}
             />
           </Search>
         </Toolbar>
