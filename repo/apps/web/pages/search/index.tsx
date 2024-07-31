@@ -6,6 +6,7 @@ import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
 import useDocuments from '@/hooks/useElastic';
 import useSearchDocuments from '@/hooks/useSearch';
+import useSemanticSearch from '@/hooks/useSemanticSearch';
 import { SxProps } from '@mui/system';
 
 const gridStyles: SxProps = {
@@ -16,11 +17,13 @@ const gridStyles: SxProps = {
 
 export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
+  const [useSemantic, setUseSemantic] = useState(false); // State to toggle between hooks
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
-  const { results, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
+  const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
+  const { results: semanticResults, loading: semanticLoading, error: semanticError, search: semanticSearch } = useSemanticSearch();
 
   const isSearching = query !== '';
-  const rows = isSearching ? results : documents;
+  const rows = isSearching ? (useSemantic ? semanticResults : searchResults) : documents;
 
   const formattedRows = rows.map((doc, index) => ({
     id: doc._id,
@@ -41,12 +44,19 @@ export default function Page(): JSX.Element {
     notes: doc._source.notes || `Notes ${index + 1}`,
   }));
 
-  if ((isSearching && searchLoading) || (!isSearching && elasticLoading)) {
+  const handleSearch = (query: string) => {
+    setQuery(query);
+    if (useSemantic) {
+      semanticSearch(query);
+    }
+  };
+
+  if ((isSearching && (searchLoading || semanticLoading)) || (!isSearching && elasticLoading)) {
     return <div>Loading...</div>;
   }
 
-  if ((isSearching && searchError) || (!isSearching && elasticError)) {
-    return <div>Error: {isSearching ? searchError : elasticError}</div>;
+  if ((isSearching && (searchError || semanticError)) || (!isSearching && elasticError)) {
+    return <div>Error: {isSearching ? (searchError || semanticError) : elasticError}</div>;
   }
 
   return (
@@ -54,9 +64,9 @@ export default function Page(): JSX.Element {
       <Helmet>
         <title>Búsqueda de Documentos</title>
       </Helmet>
-      <MenuAppBar setQuery={setQuery} />
+      <MenuAppBar setQuery={handleSearch} useSemantic={useSemantic} setUseSemantic={setUseSemantic} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true}/>
+        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import Switch from '@mui/material/Switch';
 import router from "next/router";
 
 const Search = styled('div')(({ theme }) => ({
@@ -49,13 +50,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const YellowSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: "#f8b40c",
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.warning.main, 0.15),
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: "#f8b40c",
+  },
+}));
+
 interface SearchAppBarProps {
   setQuery: (query: string) => void;
+  useSemantic: boolean;
+  setUseSemantic: (useSemantic: boolean) => void;
 }
 
-export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
+export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: SearchAppBarProps) {
+  const [localQuery, setLocalQuery] = React.useState('');
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setQuery(localQuery);
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setLocalQuery(event.target.value);
+  };
+
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUseSemantic(event.target.checked);
   };
 
   return (
@@ -87,6 +114,18 @@ export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
           >
             Búsqueda de Documentos
           </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              ml: 2,
+              color: useSemantic ? "#f8b40c" : "inherit",
+              fontWeight: 'bold',
+              transition: "color 0.3s, font-weight 0.3s",
+            }}
+          >
+            Búsqueda Semántica
+          </Typography>
+          <YellowSwitch checked={useSemantic} onChange={handleToggleChange} />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -95,6 +134,8 @@ export default function SearchAppBar({ setQuery }: SearchAppBarProps) {
               placeholder="Buscar…"
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              value={localQuery}
             />
           </Search>
         </Toolbar>

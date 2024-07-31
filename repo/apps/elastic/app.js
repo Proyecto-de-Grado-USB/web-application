@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
         });
   
         res.json({
-          documents: allDocuments.hits.hits
+            documents: allDocuments.hits.hits
         });
     } catch (error) {
         console.error('Error retrieving all documents:', error);
@@ -31,6 +31,7 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
+    console.log("full-text");
     const start_time = moment().tz('America/La_Paz');
     const query = req.body.query || '';
     const { filters, parsed_query } = extractFilters(query);
@@ -49,7 +50,7 @@ app.post('/', async (req, res) => {
                     ...filters,
                 },
             },
-            size: 10,
+            size: 4000,
             from: from_,
         });
 
@@ -79,6 +80,37 @@ app.post('/', async (req, res) => {
     }
 });
 
+app.post('/semantic-search', async (req, res) => {
+    console.log("semantic");
+    const query = req.body.query || '';
+    const from_ = parseInt(req.body.from_) || 0;
+
+    try {
+        const results = await es.search({
+            query: {
+                text_expansion: {
+                    elser_embedding: {
+                        model_id: '.elser_model_2',
+                        model_text: query
+                    }
+                }
+            },
+            size: 4000,
+            from: from_
+        });
+
+        res.json({
+            results: results.hits.hits,
+            query,
+            from: from_,
+            total: results.hits.total.value
+        });
+    } catch (error) {
+        console.error('Error handling semantic search:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.post('/document', async (req, res) => {
     const document = req.body;
     try {
@@ -104,13 +136,23 @@ app.get('/document/:id', async (req, res) => {
 });
 
 app.post('/reindex', async (req, res) => {
-  try {
-      await es.reindex();
-      res.send('Indexing completed successfully.');
-  } catch (error) {
-      console.error('Error reindexing:', error);
-      res.status(500).send('Error reindexing.');
-  }
+    try {
+        await es.reindex();
+        res.send('Indexing completed successfully.');
+    } catch (error) {
+        console.error('Error reindexing:', error);
+        res.status(500).send('Error reindexing.');
+    }
+});
+
+app.post('/deploy-elser', async (req, res) => {
+    try {
+        await es.deployElser();
+        res.send('ELSER model deployed and pipeline created successfully.');
+    } catch (error) {
+        console.error('Error deploying ELSER model:', error);
+        res.status(500).send('Error deploying ELSER model.');
+    }
 });
 
 app.delete('/document/:id', async (req, res) => {
