@@ -50,6 +50,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const YellowSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: "#f8b40c",
+    '&:hover': {
+      backgroundColor: alpha(theme.palette.warning.main, 0.15),
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: "#f8b40c",
+  },
+}));
+
 interface SearchAppBarProps {
   setQuery: (query: string) => void;
   useSemantic: boolean;
@@ -102,6 +114,18 @@ export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: 
           >
             Búsqueda de Documentos
           </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              ml: 2,
+              color: useSemantic ? "#f8b40c" : "inherit",
+              fontWeight: 'bold',
+              transition: "color 0.3s, font-weight 0.3s",
+            }}
+          >
+            Búsqueda Semántica
+          </Typography>
+          <YellowSwitch checked={useSemantic} onChange={handleToggleChange} />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -114,10 +138,6 @@ export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: 
               value={localQuery}
             />
           </Search>
-          <Typography variant="body1" sx={{ ml: 2 }}>
-            Semantic Search
-          </Typography>
-          <Switch checked={useSemantic} onChange={handleToggleChange} />
         </Toolbar>
       </AppBar>
     </Box>

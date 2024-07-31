@@ -31,6 +31,7 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
+    console.log("full-text");
     const start_time = moment().tz('America/La_Paz');
     const query = req.body.query || '';
     const { filters, parsed_query } = extractFilters(query);
@@ -80,6 +81,7 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/semantic-search', async (req, res) => {
+    console.log("semantic");
     const query = req.body.query || '';
     const from_ = parseInt(req.body.from_) || 0;
 
