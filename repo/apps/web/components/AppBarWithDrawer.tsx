@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { styled, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { AppBarProps as MuiAppBarProps, AppBar as MuiAppBar, Drawer as MuiDrawer, Toolbar, IconButton, Typography, Badge, Divider, List } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from 'pages/dashboard/listItems';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { mainListItems } from 'pages/dashboard/listItems';
 import { useLoans } from '@/hooks/useLoans';
+import { signOut } from 'next-auth/react';
 import router from 'next/router';
 
 const drawerWidth: number = 240;
@@ -64,8 +66,7 @@ export default function AppBarWithDrawer({ title }) {
     setOpen(!open);
   };
 
-  const { loans, isLoading, error } = useLoans();
-
+  const { loans, isLoading } = useLoans();
   const standbyLoansCount = loans.filter((loan) => loan.state === 'standby').length;
 
   return (
@@ -83,6 +84,9 @@ export default function AppBarWithDrawer({ title }) {
             <Badge badgeContent={isLoading ? 4 : standbyLoansCount} color="secondary">
               <NotificationsIcon />
             </Badge>
+          </IconButton>
+          <IconButton color="inherit" onClick={() => signOut({ callbackUrl: '/sign-in' })}>
+            <LogoutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
