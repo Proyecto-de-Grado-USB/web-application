@@ -12,13 +12,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'POST') {
     try {
-      const { action_type, action_date } = req.body;
+      const { action_type, action_date, document_id } = req.body;
 
       if (!action_type || !action_date) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      await insertActivity(action_type, action_date);
+      await insertActivity(action_type, action_date, document_id);
       res.status(201).json({ message: 'Activity inserted successfully' });
     } catch (error) {
       console.error('Error inserting activity:', error);
