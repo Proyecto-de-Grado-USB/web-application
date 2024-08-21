@@ -72,7 +72,7 @@ export default function AppBarWithDrawer({ title }) {
   return (
     <>
       <AppBar position="absolute" open={open}>
-        <Toolbar sx={{ pr: "24px", backgroundColor: "#f8b40c" }}>
+        <Toolbar sx={{ pr: "24px", backgroundColor: "#da060b" }}>
           <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer}
             sx={{ marginRight: "36px", ...(open && { display: "none" }) }}>
             <MenuIcon />
