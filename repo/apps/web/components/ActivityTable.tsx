@@ -36,7 +36,7 @@ const ActivitiesTable: React.FC = () => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ mt: '100px', width: '80%', maxHeight: '480px' }}>
+    <TableContainer component={Paper} sx={{ mt: '10px', width: '100%', maxHeight: '480px' }}>
       <Table>
         <TableHead>
           <TableRow>
