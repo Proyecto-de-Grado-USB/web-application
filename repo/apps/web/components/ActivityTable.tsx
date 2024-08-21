@@ -27,6 +27,21 @@ const ActivitiesTable: React.FC = () => {
     fetchActivities();
   }, []);
 
+  const translateActionType = (actionType: string) => {
+    switch (actionType) {
+      case 'search':
+        return 'Buscar';
+      case 'modify':
+        return 'Modificar';
+      case 'delete':
+        return 'Eliminar';
+      case 'insert':
+        return 'Insertar';
+      default:
+        return actionType;
+    }
+  };
+
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -40,17 +55,17 @@ const ActivitiesTable: React.FC = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Action ID</TableCell>
-            <TableCell>Action Type</TableCell>
-            <TableCell>Action Date</TableCell>
-            <TableCell>Document ID</TableCell>
+            <TableCell>ID de la Acción</TableCell>
+            <TableCell>Tipo de Acción</TableCell>
+            <TableCell>Fecha</TableCell>
+            <TableCell>ISBN del Documento</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {activities.map((activity: { action_id: number; action_type: string; action_date: string; document_id: string }) => (
             <TableRow key={activity.action_id}>
               <TableCell>{activity.action_id}</TableCell>
-              <TableCell>{activity.action_type}</TableCell>
+              <TableCell>{translateActionType(activity.action_type)}</TableCell>
               <TableCell>{new Date(activity.action_date).toLocaleString()}</TableCell>
               <TableCell>{activity.document_id ?? '-'}</TableCell>
             </TableRow>
