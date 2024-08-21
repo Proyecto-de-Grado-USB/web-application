@@ -92,7 +92,7 @@ export default function SignInSide() {
             En el catálogo de la biblioteca de la Sede Académica de Cochabamba, encontrarás libros, revistas, tesis, proyectos de grado y demás para potenciar tu aprendizaje.
           </Typography>
           <NextLink href="/search" passHref>
-            <Button variant="contained" sx={{ mt: 3, mb: 2, width: 400 }}>
+            <Button variant="contained" sx={{ mt: 3, mb: 2, width: 400, backgroundColor: '#0d468f' }}>
               Empezar
             </Button>
           </NextLink>
