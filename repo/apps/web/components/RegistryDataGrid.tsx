@@ -127,20 +127,6 @@ export default function RegistryDataGrid({
           selectedRow={selectedRow}
         />
       </Box>
-      {isSearch && (
-        <a
-          href="https://elibro.net/es/lc/usalesiana/login_usuario/?next=/es/lc/usalesiana/inicio/"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ position: "absolute", bottom: 16, right: 16 }}
-        >
-          <img
-            src="https://df5kbf1hky40.cloudfront.net/static/global/img/e-libro-logo.c5173e113607.png"
-            alt="e-Libro logo"
-            style={{ width: 100, height: "auto" }}
-          />
-        </a>
-      )}
     </>
   );
 }

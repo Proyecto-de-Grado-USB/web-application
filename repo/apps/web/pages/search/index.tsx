@@ -32,7 +32,7 @@ const BackgroundImage = () => {
 const gridStyles: SxProps = {
   height: 'calc(100vh - 200px)',
   width: '95%',
-  mt: '100px',
+  mt: '120px',
 };
 
 export default function Page(): JSX.Element {
