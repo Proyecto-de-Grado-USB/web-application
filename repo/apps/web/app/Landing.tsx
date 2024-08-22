@@ -63,7 +63,6 @@ export default function SignInSide() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: 'rgba(243, 179, 12, 0.2)',
         }}
       >
         <Box
