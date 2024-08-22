@@ -81,12 +81,12 @@ export async function patchLoanState(loanId: number, newState: string) {
   }
 }
 
-export async function insertActivity(actionType: string, actionDate: string) {
+export async function insertActivity(actionType: string, actionDate: string, documentId: string) {
   const connection = await pool.getConnection();
   try {
     await connection.execute(
-      'INSERT INTO activity (action_type, action_date) VALUES (?, ?)',
-      [actionType, actionDate]
+      'INSERT INTO activity (action_type, action_date, document_id) VALUES (?, ?, ?)',
+      [actionType, actionDate, documentId]
     );
   } catch (error) {
     console.error('Error inserting activity:', error);

@@ -63,18 +63,18 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
 
   const handleUpdate = async () => {
     if (selectedRow) {
-      await insertAction("modify");
+      await insertAction("modify", formData.isbn);
       if (await updateDocument(selectedRow.id, formData)) {
         alert('El documento se actualizó.');
       }
     } else {
-      await insertAction("insert");
+      await insertAction("insert", formData.isbn);
       await onInsert(formData);
     }
     onClose();
   };
 
-  const insertAction = async (actionType: string) => {
+  const insertAction = async (actionType: string, isbn: string) => {
     const date = moment().tz('America/La_Paz');
     const actionDate = date.format();
     await fetch('http://localhost:3001/api/activities', {
@@ -82,13 +82,13 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ action_type: actionType, action_date: actionDate })
+      body: JSON.stringify({ action_type: actionType, action_date: actionDate, document_id: isbn })
     });
   };
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this document?')) {
-      await insertAction("delete");
+      await insertAction("delete", formData.isbn);
       if (await deleteDocument(selectedRow.id)) {
         alert('El documento se eliminó.');
       }

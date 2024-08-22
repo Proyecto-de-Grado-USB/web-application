@@ -65,7 +65,7 @@ app.post('/', async (req, res) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action_type: actionType, action_date: actionDate })
+            body: JSON.stringify({ action_type: actionType, action_date: actionDate, document_id: null })
         });
 
         res.json({

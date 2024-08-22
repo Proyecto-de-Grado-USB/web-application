@@ -2,15 +2,15 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, CssBaseline, ThemeProvider, createTheme, Grid } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider, createTheme, Grid, Paper, Typography } from '@mui/material';
 import AppBarWithDrawer from '@/components/AppBarWithDrawer';
 import CustomCard from '@/components/CustomCard';
 import BookIcon from '@mui/icons-material/Book';
-import PeopleIcon from '@mui/icons-material/People';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { useLoans } from '@/hooks/useLoans';
 import useDocuments from '@/hooks/useElastic';
+import ActivitiesTable from '@/components/ActivityTable';
 
 const defaultTheme = createTheme();
 
@@ -23,7 +23,7 @@ export default function Page(): JSX.Element {
 
   const cardData = [
     { title: 'Total de Libros', content: documentsLoading ? '0' : documents.length.toString(), icon: <BookIcon /> },
-    //{ title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
+    // { title: 'Cantidad de Lectores', content: '0', icon: <PeopleIcon /> },
     { title: 'Préstamos Registrados', content: loansLoading ? '0' : completedLoansCount.toString(), icon: <PlaylistAddCheckIcon /> },
     { title: 'Préstamos Pendientes', content: loansLoading ? '0' : pendingLoansCount.toString(), icon: <FormatListNumberedIcon /> },
   ];
@@ -45,6 +45,15 @@ export default function Page(): JSX.Element {
               </Grid>
             ))}
           </Grid>
+          <Box sx={{ mt: 4 }}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="h5" gutterBottom>
+                Registro de Actividades
+              </Typography>
+              <ActivitiesTable />
+            </Paper>
+          </Box>
+
         </Box>
       </Box>
     </ThemeProvider>

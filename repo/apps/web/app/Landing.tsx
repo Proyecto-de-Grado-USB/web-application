@@ -92,15 +92,23 @@ export default function SignInSide() {
             En el catálogo de la biblioteca de la Sede Académica de Cochabamba, encontrarás libros, revistas, tesis, proyectos de grado y demás para potenciar tu aprendizaje.
           </Typography>
           <NextLink href="/search" passHref>
-            <Button variant="contained" sx={{ mt: 3, mb: 2, width: 400 }}>
+            <Button variant="contained" sx={{ mt: 3, mb: 2, width: 400, backgroundColor: '#0d468f' }}>
               Empezar
             </Button>
           </NextLink>
           <Copyright />
-          <img
-            src="https://df5kbf1hky40.cloudfront.net/media/cache/80/b5/80b5493849bdbc392316e766cc6ce8b1.png"
-            alt="Welcome"
-          />
+          <a
+            href="https://elibro.net/es/lc/usalesiana/login_usuario/?next=/es/lc/usalesiana/inicio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ marginTop: "16px" }}
+          >
+            <img
+              src="https://df5kbf1hky40.cloudfront.net/static/global/img/e-libro-logo.c5173e113607.png"
+              alt="e-Libro logo"
+              style={{ width: 120, height: "auto" }}
+            />
+          </a>
         </Box>
       </Grid>
     </Grid>

@@ -10,9 +10,9 @@ import Card from "./MetricsCard";
 import { Helmet } from "react-helmet";
 import AppBarWithDrawer from "@/components/AppBarWithDrawer";
 import Typography from "@mui/material/Typography";
-import { Link } from "@mui/material";
 import LoansPieChart from "@/components/LoansPieChart";
 import LoansBarChart from "@/components/LoansBarChart";
+import ActivitiesTable from "@/components/ActivityTable";
 
 const defaultTheme = createTheme();
 

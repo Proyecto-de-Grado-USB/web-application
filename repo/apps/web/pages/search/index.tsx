@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
 import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
@@ -9,10 +10,29 @@ import useSearchDocuments from '@/hooks/useSearch';
 import useSemanticSearch from '@/hooks/useSemanticSearch';
 import { SxProps } from '@mui/system';
 
+const BackgroundImage = () => {
+  return ReactDOM.createPortal(
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundImage: 'url("sales.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        zIndex: -1,
+      }}
+    />,
+    document.body
+  );
+};
+
 const gridStyles: SxProps = {
-  height: 'calc(100vh - 200px)', 
-  width: '95%', 
-  mt: '100px', 
+  height: 'calc(100vh - 200px)',
+  width: '95%',
+  mt: '120px',
 };
 
 export default function Page(): JSX.Element {
@@ -68,6 +88,7 @@ export default function Page(): JSX.Element {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} />
       </div>
+      <BackgroundImage />
     </div>
   );
 }
