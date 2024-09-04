@@ -82,10 +82,12 @@ export default function RegistryDataGrid({
     setUserDetailsOpen(true);
   };
 
-  const rowsWithNumbers = rows.map((row, index) => ({
-    ...row,
-    number: index + 1,
-  }));
+  const rowsWithNumbers = rows
+    .filter(row => !isSearch || (row.property !== 'Archivado' && row.property !== 'Eliminado'))
+    .map((row, index) => ({
+      ...row,
+      number: index + 1,
+    }));
 
   return (
     <>
