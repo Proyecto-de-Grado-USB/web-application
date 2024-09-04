@@ -59,7 +59,7 @@ const LoanTable: React.FC = () => {
             {loans.map((loan) => (
               <TableRow key={loan.document_id} onClick={() => handleRowClick(loan)} style={{ cursor: 'pointer' }}>
                 <TableCell>{loan.document_id}</TableCell>
-                <TableCell>{loan.user_id}</TableCell>
+                <TableCell>{loan.user_id ? loan.user_id : '-'}</TableCell>
                 <TableCell>{loan.expiration_date}</TableCell>
                 <TableCell>{translateState(loan.state)}</TableCell>
               </TableRow>
