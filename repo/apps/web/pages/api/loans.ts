@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const { document_id, user_id, expiration_date, state, user_name, phone, email, teacher, career, reg_univ } = req.body;
 
-      if (!document_id || !user_id || !expiration_date || !state || !user_name || !phone || !email || !teacher || !career || !reg_univ) {
+      if (!document_id || !expiration_date || !state || !user_name || !phone || !email || !teacher || !career || !reg_univ) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 

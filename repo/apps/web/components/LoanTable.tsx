@@ -28,6 +28,8 @@ const LoanTable: React.FC = () => {
         return 'Pendiente';
       case 'completed':
         return 'Completado';
+      case 'rejected':
+        return 'Rechazado';
       default:
         return state;
     }

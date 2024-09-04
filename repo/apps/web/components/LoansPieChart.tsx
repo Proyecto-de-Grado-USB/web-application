@@ -19,13 +19,14 @@ const LoansPieChart: React.FC = () => {
       acc[loan.state]++;
       return acc;
     },
-    { standby: 0, completed: 0, pending: 0 }
+    { standby: 0, completed: 0, pending: 0, rejected: 0 }
   );
 
   const data = [
     { id: 0, value: stateCounts.standby, label: 'En Espera' },
-    { id: 1, value: stateCounts.completed, label: 'Completada' },
-    { id: 2, value: stateCounts.pending, label: 'Pendiente' },
+    { id: 1, value: stateCounts.completed, label: 'Completados' },
+    { id: 2, value: stateCounts.pending, label: 'Pendientes' },
+    { id: 3, value: stateCounts.rejected, label: 'Rechazados' },
   ];
 
   return (
