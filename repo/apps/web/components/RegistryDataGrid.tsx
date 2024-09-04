@@ -28,6 +28,7 @@ const columns: GridColDef[] = [
   //{ field: "dimensions", headerName: "Dimensiones", width: 150 },
   //{ field: "subject", headerName: "Tema", width: 180 },
   { field: "notes", headerName: "Notas", flex: 1 },
+  //{ field: "property", headerName: "Estado", width: 180 },
 ];
 
 function CustomToolbar() {

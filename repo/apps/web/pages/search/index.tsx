@@ -62,6 +62,7 @@ export default function Page(): JSX.Element {
     dimensions: doc._source.dimensions || `Dimensions ${index + 1}`,
     subject: doc._source.subject || `Subject ${index + 1}`,
     notes: doc._source.notes || `Notes ${index + 1}`,
+    property: doc._source.property || `Properties ${index + 1}`,
   }));
 
   const handleSearch = (query: string) => {

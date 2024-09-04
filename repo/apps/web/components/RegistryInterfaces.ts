@@ -16,6 +16,7 @@ export interface Registry {
     dimensions?: string;
     subject: string;
     notes?: string;
+    property: string;
 }
 
 export interface RegistryDataGridProps {

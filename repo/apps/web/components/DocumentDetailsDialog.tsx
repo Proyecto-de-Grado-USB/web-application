@@ -24,7 +24,8 @@ const headerMap = {
   pages: 'Páginas',
   dimensions: 'Dimensiones',
   subject: 'Tema',
-  notes: 'Notas'
+  notes: 'Notas',
+  property: 'Estado',
 };
 
 function DocumentDetailsDialog({ open, onClose, selectedRow, onOpenUserDetails }) {

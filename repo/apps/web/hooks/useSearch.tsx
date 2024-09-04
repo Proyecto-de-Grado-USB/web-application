@@ -17,6 +17,7 @@ interface DocumentSource {
     dimensions?: string;
     subject: string;
     notes?: string;
+    property: string;
 }
 
 interface DocumentResult {
