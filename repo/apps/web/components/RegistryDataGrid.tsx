@@ -9,7 +9,6 @@ import {
 import { RegistryDataGridProps } from "./RegistryInterfaces";
 import DocumentDetailsDialog from "./DocumentDetailsDialog";
 import UserDetailsDialog from "./UserDetailsDialog";
-import useDelete from '@/hooks/useDelete';
 import UpdateDocumentDialog from './UpdateDocumentDialog';
 
 const columns: GridColDef[] = [
@@ -22,13 +21,13 @@ const columns: GridColDef[] = [
   { field: "city", headerName: "Ciudad", width: 120 },
   { field: "country", headerName: "País", width: 120 },
   { field: "edition", headerName: "Edición", width: 120 },
-  { field: "format", headerName: "Formato", width: 120 },
-  { field: "isbn", headerName: "ISBN", width: 150 },
-  { field: "language", headerName: "Idioma", width: 120 },
-  { field: "pages", headerName: "Páginas", width: 100 },
-  { field: "dimensions", headerName: "Dimensiones", width: 150 },
-  { field: "subject", headerName: "Tema", width: 180 },
-  { field: "notes", headerName: "Notas", width: 200 },
+  //{ field: "format", headerName: "Formato", width: 120 },
+  //{ field: "isbn", headerName: "ISBN", width: 150 },
+  //{ field: "language", headerName: "Idioma", width: 120 },
+  //{ field: "pages", headerName: "Páginas", width: 100 },
+  //{ field: "dimensions", headerName: "Dimensiones", width: 150 },
+  //{ field: "subject", headerName: "Tema", width: 180 },
+  { field: "notes", headerName: "Notas", flex: 1 },
 ];
 
 function CustomToolbar() {
