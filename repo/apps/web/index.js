@@ -1,7 +1,6 @@
 const { db } = require('./firebase');
 const { collection, deleteDoc, getDocs, addDoc } = require('firebase/firestore');
 
-// Utility function to delete all documents in a collection
 async function deleteAllDocuments(collectionName) {
   const collectionRef = collection(db, collectionName);
   const snapshot = await getDocs(collectionRef);
@@ -10,9 +9,8 @@ async function deleteAllDocuments(collectionName) {
   await Promise.all(deletePromises);
 }
 
-// Function to insert data into the admin_users collection
 async function insertAdminUsers() {
-  const adminUsersRef = collection(db, 'admin_users');
+  const adminUsersRef = collection(db, 'users');
   
   const users = [
     { name: 'Pablo Terceros', email: 'user1@example.com', password: 'password1' },
@@ -23,7 +21,6 @@ async function insertAdminUsers() {
   await Promise.all(insertPromises);
 }
 
-// Function to insert data into the loans collection
 async function insertLoans() {
   const loansRef = collection(db, 'loans');
 
@@ -70,7 +67,6 @@ async function insertLoans() {
   await Promise.all(insertPromises);
 }
 
-// Function to insert data into the activity collection
 async function insertActivity() {
   const activityRef = collection(db, 'activity');
 
@@ -85,22 +81,22 @@ async function insertActivity() {
   await Promise.all(insertPromises);
 }
 
-// Main function to delete existing data and insert new data
 async function main() {
-  // Deleting all data from the collections
-  await deleteAllDocuments('admin_users');
-  await deleteAllDocuments('loans');
-  await deleteAllDocuments('activity');
-
-  // Inserting new data into the collections
-  await insertAdminUsers();
-  await insertLoans();
-  await insertActivity();
-
-  console.log('Data reset and insertion complete!');
-}
-
-// Run the main function
-main().catch(err => {
-  console.error('Error during execution:', err);
-});
+    try {
+      await deleteAllDocuments('users');
+      await deleteAllDocuments('loans');
+      await deleteAllDocuments('activity');
+  
+      await insertAdminUsers();
+      await insertLoans();
+      await insertActivity();
+  
+      console.log('Data reset and insertion complete!');
+    } catch (err) {
+      console.error('Error during execution:', err);
+    } finally {
+      process.exit();
+    }
+  }
+  
+  main();  
