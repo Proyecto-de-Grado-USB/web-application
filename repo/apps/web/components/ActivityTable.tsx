@@ -2,23 +2,32 @@ import React, { useState, useEffect } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert
 } from '@mui/material';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+
+type Activity = {
+  action_id: string;
+  action_type: string;
+  action_date: string;
+  document_id: string;
+};
 
 const ActivitiesTable: React.FC = () => {
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchActivities() {
       try {
-        const response = await fetch('http://localhost:3001/api/activities');
-        if (!response.ok) {
-          throw new Error('Failed to fetch activities');
-        }
-        const data = await response.json();
-        setActivities(data);
+        const querySnapshot = await getDocs(collection(db, 'activity'));
+        const activitiesData = querySnapshot.docs.map(doc => ({
+          action_id: doc.id,
+          ...doc.data()
+        })) as Activity[];
+        setActivities(activitiesData);
       } catch (error: any) {
-        setError(error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -47,7 +56,7 @@ const ActivitiesTable: React.FC = () => {
   }
 
   if (error) {
-    return <Alert severity="error">{'There was an error'}</Alert>;
+    return <Alert severity="error">{`There was an error: ${error}`}</Alert>;
   }
 
   return (
@@ -62,7 +71,7 @@ const ActivitiesTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities.map((activity: { action_id: number; action_type: string; action_date: string; document_id: string }) => (
+          {activities?.map((activity: Activity) => (
             <TableRow key={activity.action_id}>
               <TableCell>{activity.action_id}</TableCell>
               <TableCell>{translateActionType(activity.action_type)}</TableCell>
