@@ -81,7 +81,7 @@ export default function AppBarWithDrawer({ title }) {
             {title}
           </Typography>
           <IconButton color="inherit" onClick={() => router.push('/loan')}>
-            <Badge badgeContent={isLoading ? 4 : standbyLoansCount} color="secondary">
+            <Badge badgeContent={isLoading ? 0 : standbyLoansCount} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>

@@ -155,13 +155,8 @@ class Search {
 
     async updateDocument(id, document) {
         try {
-            return await this.client.update({
-                index: 'my_documents',
-                id: id,
-                body: {
-                    doc: document
-                }
-            });
+            await this.deleteDocument(id);
+            await this.insertDocument(document);
         } catch (error) {
             console.error('Error updating document:', error);
             return null;

@@ -25,7 +25,8 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
     pages: 'Páginas',
     dimensions: 'Dimensiones',
     subject: 'Tema',
-    notes: 'Notas'
+    notes: 'Notas',
+    property: 'Estado'
   };
 
   useEffect(() => {
@@ -48,7 +49,8 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
         pages: '',
         dimensions: '',
         subject: '',
-        notes: ''
+        notes: '',
+        property: '',
       });
     }
   }, [selectedRow]);

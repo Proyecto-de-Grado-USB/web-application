@@ -84,6 +84,7 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
             <MenuItem value="standby">En Espera</MenuItem>
             <MenuItem value="pending">Pendiente</MenuItem>
             <MenuItem value="completed">Completado</MenuItem>
+            <MenuItem value="rejected">Rechazado</MenuItem>
           </Select>
         </FormControl>
       </DialogContent>

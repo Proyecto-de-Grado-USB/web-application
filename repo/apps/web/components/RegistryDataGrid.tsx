@@ -9,27 +9,7 @@ import {
 import { RegistryDataGridProps } from "./RegistryInterfaces";
 import DocumentDetailsDialog from "./DocumentDetailsDialog";
 import UserDetailsDialog from "./UserDetailsDialog";
-import useDelete from '@/hooks/useDelete';
-import UpdateDocumentDialog from './UpdateDocumentDialog';
-
-const columns: GridColDef[] = [
-  { field: "number", headerName: "#", width: 80 },
-  { field: "location", headerName: "Ubicación", width: 120 },
-  { field: "title", headerName: "Título", width: 180 },
-  { field: "author", headerName: "Autor", width: 150 },
-  { field: "publisher", headerName: "Editorial", width: 150 },
-  { field: "year", headerName: "Año", width: 100 },
-  { field: "city", headerName: "Ciudad", width: 120 },
-  { field: "country", headerName: "País", width: 120 },
-  { field: "edition", headerName: "Edición", width: 120 },
-  { field: "format", headerName: "Formato", width: 120 },
-  { field: "isbn", headerName: "ISBN", width: 150 },
-  { field: "language", headerName: "Idioma", width: 120 },
-  { field: "pages", headerName: "Páginas", width: 100 },
-  { field: "dimensions", headerName: "Dimensiones", width: 150 },
-  { field: "subject", headerName: "Tema", width: 180 },
-  { field: "notes", headerName: "Notas", width: 200 },
-];
+import UpdateDocumentDialog from "./UpdateDocumentDialog";
 
 function CustomToolbar() {
   return (
@@ -82,10 +62,45 @@ export default function RegistryDataGrid({
     setUserDetailsOpen(true);
   };
 
-  const rowsWithNumbers = rows.map((row, index) => ({
-    ...row,
-    number: index + 1,
-  }));
+  const rowsWithNumbers = rows
+    .filter(
+      (row) =>
+        !isSearch ||
+        (row.property !== "Archivado" && row.property !== "Eliminado")
+    )
+    .map((row, index) => ({
+      ...row,
+      number: index + 1,
+    }));
+
+    const columns: GridColDef[] = [
+      { field: "number", headerName: "#", width: 80 },
+      { field: "location", headerName: "Ubicación", width: 120 },
+      { field: "title", headerName: "Título", width: 180 },
+      { field: "author", headerName: "Autor", width: 150 },
+      { field: "publisher", headerName: "Editorial", width: 150 },
+      { field: "year", headerName: "Año", width: 100 },
+      { field: "city", headerName: "Ciudad", width: 120 },
+      { field: "country", headerName: "País", width: 120 },
+      { field: "edition", headerName: "Edición", width: 120 },
+      {
+        field: "notes",
+        headerName: "Notas",
+        width: isSearch ? undefined : 120,
+        flex: isSearch ? 1 : undefined,
+      },
+      ...(!isSearch
+        ? [
+            { field: "format", headerName: "Formato", width: 120 },
+            { field: "isbn", headerName: "ISBN", width: 150 },
+            { field: "language", headerName: "Idioma", width: 120 },
+            { field: "pages", headerName: "Páginas", width: 100 },
+            { field: "dimensions", headerName: "Dimensiones", width: 150 },
+            { field: "subject", headerName: "Tema", width: 180 },
+            { field: "property", headerName: "Estado", width: 180 },
+          ]
+        : []),
+    ];    
 
   return (
     <>
