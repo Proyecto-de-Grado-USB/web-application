@@ -1,5 +1,18 @@
-const { db } = require('./firebase');
-const { collection, deleteDoc, getDocs, addDoc } = require('firebase/firestore');
+const { initializeApp } = require("firebase/app");
+const { getFirestore, collection, deleteDoc, getDocs, addDoc } = require("firebase/firestore");
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAJgwZ41KhlDFQdtcCTmHdG6odu_hGTDkA",
+  authDomain: "web-application-cee1f.firebaseapp.com",
+  projectId: "web-application-cee1f",
+  storageBucket: "web-application-cee1f.appspot.com",
+  messagingSenderId: "364546531367",
+  appId: "1:364546531367:web:d6c6375af71444f69fae02",
+  measurementId: "G-PTSP2SPEWL"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 async function deleteAllDocuments(collectionName) {
   const collectionRef = collection(db, collectionName);
@@ -82,21 +95,21 @@ async function insertActivity() {
 }
 
 async function main() {
-    try {
-      await deleteAllDocuments('users');
-      await deleteAllDocuments('loans');
-      await deleteAllDocuments('activity');
-  
-      await insertAdminUsers();
-      await insertLoans();
-      await insertActivity();
-  
-      console.log('Data reset and insertion complete!');
-    } catch (err) {
-      console.error('Error during execution:', err);
-    } finally {
-      process.exit();
-    }
+  try {
+    await deleteAllDocuments('users');
+    await deleteAllDocuments('loans');
+    await deleteAllDocuments('activity');
+
+    await insertAdminUsers();
+    await insertLoans();
+    await insertActivity();
+
+    console.log('Data reset and insertion complete!');
+  } catch (err) {
+    console.error('Error during execution:', err);
+  } finally {
+    process.exit();
   }
-  
-  main();  
+}
+
+main();
