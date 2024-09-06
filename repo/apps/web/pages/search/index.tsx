@@ -7,7 +7,7 @@ import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
 import useDocuments from '@/hooks/elastic/useElastic';
 import useSearchDocuments from '@/hooks/elastic/useSearch';
-import useSemanticSearch from '@/hooks/elastic/useSemanticSearch';
+import useSemanticSearch from '@/hooks/elastic/useSemantic';
 import { SxProps } from '@mui/system';
 
 const BackgroundImage = () => {
