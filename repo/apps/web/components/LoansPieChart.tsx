@@ -34,7 +34,7 @@ const LoansPieChart: React.FC = () => {
       <CardContent>
         <Title>Estado de los Préstamos</Title>
         {isLoading && <Typography>Loading...</Typography>}
-        {error && <Typography>Error: {error.message}</Typography>}
+        {error && <Typography>Error: {error}</Typography>}
         {!isLoading && !error && (
           <PieChart
             series={[
