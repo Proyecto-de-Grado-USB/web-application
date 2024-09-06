@@ -40,7 +40,7 @@ async function insertLoans() {
   const loanData = [
     {
       document_id: '978-0-19-715402-1',
-      user_id: '1',
+      user_id: '1234561',
       expiration_date: '2024-08-20',
       state: 'standby',
       user_name: 'Juan Perez',
@@ -52,7 +52,7 @@ async function insertLoans() {
     },
     {
       document_id: '978-0-19-715402-2',
-      user_id: '2',
+      user_id: '1234562',
       expiration_date: '2024-07-20',
       state: 'pending',
       user_name: 'Maria Lopez',
@@ -64,7 +64,7 @@ async function insertLoans() {
     },
     {
       document_id: '978-0-19-715402-3',
-      user_id: '3',
+      user_id: '1234563',
       expiration_date: '2024-07-20',
       state: 'completed',
       user_name: 'Carlos Ruiz',
