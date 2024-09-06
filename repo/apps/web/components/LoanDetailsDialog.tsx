@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { useUpdateState } from '@/hooks/firebase/useUpdateState';
+import { useUpdateState } from '@/hooks/firebase/useStateUpdate';
 
 const headerMap = {
   document_id: 'ISBN',
@@ -27,23 +27,24 @@ const LoanDetailsDialog = ({ open, onClose, selectedRow }) => {
   const { updateState, isLoading, error, success } = useUpdateState();
   const [newState, setNewState] = useState('');
 
+  useEffect(() => {
+    if (open && selectedRow) {
+      setNewState(selectedRow.state || '');
+    }
+  }, [open, selectedRow]);
+
   const handleStateChange = async (event) => {
     const updatedState = event.target.value;
     setNewState(updatedState);
-    if (selectedRow && selectedRow.loan_id) {
-      await updateState(selectedRow.loan_id, updatedState);
+
+    if (selectedRow && selectedRow.id) {
+      await updateState(selectedRow.id, updatedState);
     }
   };
 
-  useEffect(() => {
-    if (open) {
-      setNewState('');
-    }
-  }, [open]);
-
   const renderRowDetails = (row) => {
     return Object.entries(row)
-      .filter(([key]) => key !== "loan_id")
+      .filter(([key]) => key !== "id")
       .map(([key, value]) => (
         <DialogContentText key={key} component="div">
           <strong>{`${headerMap[key] || key}:`}</strong> {value}

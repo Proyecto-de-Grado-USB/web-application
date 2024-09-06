@@ -1,27 +1,23 @@
 import { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 export function useUpdateState() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
-  async function updateState(loanId: number, newState: string) {
+  async function updateState(loanId: string, newState: string) {
     setIsLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
-      const response = await fetch('/api/loans', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ loanId, newState }),
-      });
+      const loanDocRef = doc(db, 'loans', loanId);
 
-      if (!response.ok) {
-        throw new Error('No se pudo completar la solicitud.');
-      }
+      await updateDoc(loanDocRef, {
+        state: newState
+      });
 
       setSuccess(true);
     } catch (err) {
