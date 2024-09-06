@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { useUpdateState } from '@/hooks/useUpdateState';
+import { useUpdateState } from '@/hooks/firebase/useUpdateState';
 
 const headerMap = {
   document_id: 'ISBN',

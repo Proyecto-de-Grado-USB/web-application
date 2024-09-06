@@ -1,6 +1,6 @@
 import * as mysql from 'mysql2/promise';
 import * as dotenv from 'dotenv';
-import { Loan } from '@/hooks/loanInterface';
+import { Loan } from '@/hooks/firebase/interfaceLoans';
 
 dotenv.config({ path: '.env.local' });
 

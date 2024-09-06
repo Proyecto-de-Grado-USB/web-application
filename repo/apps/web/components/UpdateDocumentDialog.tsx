@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
-import useUpdate from '@/hooks/useUpdate';
-import useDelete from '@/hooks/useDelete';
+import useUpdate from '@/hooks/elastic/useUpdate';
+import useDelete from '@/hooks/elastic/useDelete';
 import moment from 'moment-timezone';
 
 const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {

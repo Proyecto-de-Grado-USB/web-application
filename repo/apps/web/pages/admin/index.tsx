@@ -8,8 +8,8 @@ import CustomCard from '@/components/CustomCard';
 import BookIcon from '@mui/icons-material/Book';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
-import { useLoans } from '@/hooks/useLoans';
-import useDocuments from '@/hooks/useElastic';
+import { useLoans } from '@/hooks/firebase/useLoans';
+import useDocuments from '@/hooks/elastic/useElastic';
 import ActivitiesTable from '@/components/ActivityTable';
 
 const defaultTheme = createTheme();

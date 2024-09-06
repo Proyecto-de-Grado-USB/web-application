@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { useLoans } from '@/hooks/useLoans';
+import { useLoans } from '@/hooks/firebase/useLoans';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 
 const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {

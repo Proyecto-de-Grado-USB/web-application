@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLoans } from '@/hooks/useLoans';
+import { useLoans } from '@/hooks/firebase/useLoans';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert
 } from '@mui/material';
@@ -10,7 +10,7 @@ const LoanTable: React.FC = () => {
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const handleRowClick = (loan) => {
+  const handleRowClick = (loan: any) => {
     setSelectedLoan(loan);
     setDialogOpen(true);
   };
@@ -20,7 +20,7 @@ const LoanTable: React.FC = () => {
     setSelectedLoan(null);
   };
 
-  const translateState = (state) => {
+  const translateState = (state: any) => {
     switch (state) {
       case 'standby':
         return 'En Espera';

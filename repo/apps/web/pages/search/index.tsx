@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
 import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
-import useDocuments from '@/hooks/useElastic';
-import useSearchDocuments from '@/hooks/useSearch';
-import useSemanticSearch from '@/hooks/useSemanticSearch';
+import useDocuments from '@/hooks/elastic/useElastic';
+import useSearchDocuments from '@/hooks/elastic/useSearch';
+import useSemanticSearch from '@/hooks/elastic/useSemanticSearch';
 import { SxProps } from '@mui/system';
 
 const BackgroundImage = () => {
