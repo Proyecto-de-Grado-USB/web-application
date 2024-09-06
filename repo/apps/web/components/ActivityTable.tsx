@@ -1,40 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert
 } from '@mui/material';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
-
-type Activity = {
-  action_id: string;
-  action_type: string;
-  action_date: string;
-  document_id: string;
-};
+import useActivities from '../hooks/useActivities';
 
 const ActivitiesTable: React.FC = () => {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchActivities() {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'activity'));
-        const activitiesData = querySnapshot.docs.map(doc => ({
-          action_id: doc.id,
-          ...doc.data()
-        })) as Activity[];
-        setActivities(activitiesData);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchActivities();
-  }, []);
+  const { activities, isLoading, error } = useActivities();
 
   const translateActionType = (actionType: string) => {
     switch (actionType) {
@@ -71,7 +42,7 @@ const ActivitiesTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities?.map((activity: Activity) => (
+          {activities?.map(activity => (
             <TableRow key={activity.action_id}>
               <TableCell>{activity.action_id}</TableCell>
               <TableCell>{translateActionType(activity.action_type)}</TableCell>
