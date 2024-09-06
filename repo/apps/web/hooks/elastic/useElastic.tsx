@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ErrorResponse, SearchResponse, Document } from './ElasticInterface';
+import { ErrorResponse, SearchResponse, Document } from './interfaceDocs';
 
 const useDocuments = () => {
     const [documents, setDocuments] = useState<Document[]>([]);

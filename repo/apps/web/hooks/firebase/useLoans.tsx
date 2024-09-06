@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loan } from './loanInterface';
+import { Loan } from './interfaceLoans';
 
 export function useLoans() {
   const [loans, setLoans] = useState<Loan[]>([]);

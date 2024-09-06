@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { useInsertLoan } from '../hooks/useInsertLoan';
+import { useInsertLoan } from '../hooks/firebase/useInsertLoan';
 import { Loan } from '@/hooks/loanInterface';
 
 function UserDetailsDialog({ open, onClose, selectedRow}) {

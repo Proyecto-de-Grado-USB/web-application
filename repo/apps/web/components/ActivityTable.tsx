@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert
 } from '@mui/material';
-import useActivities from '../hooks/useActivities';
+import useActivities from '../hooks/firebase/useActivities';
 
 const ActivitiesTable: React.FC = () => {
   const { activities, isLoading, error } = useActivities();

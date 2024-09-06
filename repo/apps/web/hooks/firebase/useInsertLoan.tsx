@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loan } from './loanInterface';
+import { Loan } from './interfaceLoans';
 
 export function useInsertLoan() {
   const [isLoading, setIsLoading] = useState(false);

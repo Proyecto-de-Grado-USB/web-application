@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAllLoans, insertLoan, patchLoanState } from '../../app/lib/data';
-import type { Loan } from '../../hooks/loanInterface';
+import type { Loan } from '../../hooks/firebase/interfaceLoans';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
