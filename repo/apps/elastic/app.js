@@ -58,16 +58,6 @@ app.post('/', async (req, res) => {
         const response_time = end_time.diff(start_time, 'milliseconds');
         console.log(`Response time: ${response_time} milliseconds`);
 
-        const actionType = 'search';
-        const actionDate = end_time.format();
-        await fetch('http://localhost:3001/api/activities', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action_type: actionType, action_date: actionDate, document_id: null })
-        });
-
         res.json({
             results: results.hits.hits,
             query,
