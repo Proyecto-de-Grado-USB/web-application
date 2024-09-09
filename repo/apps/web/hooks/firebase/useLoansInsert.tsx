@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Loan } from './loanInterface';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { Loan } from './interfaceLoans';
 
 export function useInsertLoan() {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,17 +14,7 @@ export function useInsertLoan() {
     setSuccess(false);
 
     try {
-      const response = await fetch('/api/loans', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loan),
-      });
-
-      if (!response.ok) {
-        throw new Error('No se pudo completar la solicitud.');
-      }
+      await addDoc(collection(db, 'loans'), loan);
 
       setSuccess(true);
     } catch (err) {

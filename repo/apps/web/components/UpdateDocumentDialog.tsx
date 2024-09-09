@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
-import useUpdate from '@/hooks/useUpdate';
-import useDelete from '@/hooks/useDelete';
-import moment from 'moment-timezone';
+import useUpdate from '@/hooks/elastic/useUpdate';
+import useDelete from '@/hooks/elastic/useDelete';
+import useActivitiesInsert from '@/hooks/firebase/useActivitiesInsert';
 
 const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
   const [formData, setFormData] = useState({});
   const { updateDocument } = useUpdate();
   const { deleteDocument } = useDelete();
+  const { insertAction } = useActivitiesInsert();
 
   const labelMap = {
     number: '#',
@@ -66,9 +67,8 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
   const handleUpdate = async () => {
     if (selectedRow) {
       await insertAction("modify", formData.isbn);
-      if (await updateDocument(selectedRow.id, formData)) {
-        alert('El documento se actualizó.');
-      }
+      await updateDocument(selectedRow.id, formData);
+      alert('El documento se actualizó.');
     } else {
       await insertAction("insert", formData.isbn);
       await onInsert(formData);
@@ -76,24 +76,11 @@ const UpdateDocumentDialog = ({ open, onClose, selectedRow, onInsert }) => {
     onClose();
   };
 
-  const insertAction = async (actionType: string, isbn: string) => {
-    const date = moment().tz('America/La_Paz');
-    const actionDate = date.format();
-    await fetch('http://localhost:3001/api/activities', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action_type: actionType, action_date: actionDate, document_id: isbn })
-    });
-  };
-
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this document?')) {
       await insertAction("delete", formData.isbn);
-      if (await deleteDocument(selectedRow.id)) {
-        alert('El documento se eliminó.');
-      }
+      await deleteDocument(selectedRow.id);
+      alert('El documento se eliminó.');
       onClose();
     }
   };

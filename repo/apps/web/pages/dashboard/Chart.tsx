@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import Title from './Title';
+import useActivities from '@/hooks/firebase/useActivities';
 
 function createData(
   time: string,
@@ -13,41 +14,41 @@ function createData(
 
 export default function Chart() {
   const theme = useTheme();
+  const { activities, isLoading, error } = useActivities();
   const [data, setData] = React.useState<{ time: string; amount: number | null }[]>([]);
 
   React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('http://localhost:3001/api/activities');
-        const activities = await response.json();
+    if (activities && activities.length > 0) {
+      // Filter activities of type 'search'
+      const filteredActivities = activities.filter((activity) => activity.action_type === 'search');
 
-        const filteredActivities = activities.filter((activity: { action_type: string }) => activity.action_type === 'search');
+      const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const activityCountByDay: { [key: string]: number } = {};
 
-        const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-        const activityCountByDay: { [key: string]: number } = {};
+      daysOfWeek.forEach(day => {
+        activityCountByDay[day] = 0;
+      });
 
-        daysOfWeek.forEach(day => {
-          activityCountByDay[day] = 0;
-        });
+      filteredActivities.forEach((activity) => {
+        const date = new Date(activity.action_date);
+        const day = daysOfWeek[date.getDay()];
+        if (day) {
+          activityCountByDay[day] += 1;
+        }
+      });
 
-        filteredActivities.forEach((activity: { action_date: string }) => {
-          const date = new Date(activity.action_date);
-          const day = daysOfWeek[date.getDay()];
-          if (day) {
-            activityCountByDay[day] += 1;
-          }
-        });
-
-        const chartData = daysOfWeek.map(day => createData(day, activityCountByDay[day]));
-        setData(chartData);
-
-      } catch (error) {
-        console.error('Error fetching activities:', error);
-      }
+      const chartData = daysOfWeek.map(day => createData(day, activityCountByDay[day]));
+      setData(chartData);
     }
+  }, [activities]);
 
-    fetchData();
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading activities: {error}</div>;
+  }
 
   return (
     <React.Fragment>

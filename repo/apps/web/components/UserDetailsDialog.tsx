@@ -8,8 +8,8 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { useInsertLoan } from '../hooks/useInsertLoan';
-import { Loan } from '@/hooks/loanInterface';
+import { useInsertLoan } from '@/hooks/firebase/useLoansInsert';
+import { Loan } from '@/hooks/firebase/interfaceLoans';
 
 function UserDetailsDialog({ open, onClose, selectedRow}) {
     const { insertLoan, isLoading, error, success } = useInsertLoan();

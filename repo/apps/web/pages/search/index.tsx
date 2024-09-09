@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
 import MenuAppBar from '@/components/AppBar';
 import RegistryDataGrid from '@/components/RegistryDataGrid';
-import useDocuments from '@/hooks/useElastic';
-import useSearchDocuments from '@/hooks/useSearch';
-import useSemanticSearch from '@/hooks/useSemanticSearch';
+import useDocuments from '@/hooks/elastic/useElastic';
+import useSearchDocuments from '@/hooks/elastic/useSearch';
+import useSemanticSearch from '@/hooks/elastic/useSemantic';
+import useActivitiesInsert from '@/hooks/firebase/useActivitiesInsert';
 import { SxProps } from '@mui/system';
 
 const BackgroundImage = () => {
@@ -37,10 +38,11 @@ const gridStyles: SxProps = {
 
 export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
-  const [useSemantic, setUseSemantic] = useState(false); // State to toggle between hooks
+  const [useSemantic, setUseSemantic] = useState(false);
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
   const { results: semanticResults, loading: semanticLoading, error: semanticError, search: semanticSearch } = useSemanticSearch();
+  const { insertAction } = useActivitiesInsert();
 
   const isSearching = query !== '';
   const rows = isSearching ? (useSemantic ? semanticResults : searchResults) : documents;
@@ -65,10 +67,15 @@ export default function Page(): JSX.Element {
     property: doc._source.property || `Properties ${index + 1}`,
   }));
 
-  const handleSearch = (query: string) => {
+  const handleSearch = async (query: string) => {
     setQuery(query);
     if (useSemantic) {
       semanticSearch(query);
+    }
+    try {
+      await insertAction('search', query);
+    } catch (error) {
+      console.error('Failed to log search activity:', error);
     }
   };
 

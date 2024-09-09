@@ -1,6 +1,36 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { findUserByEmailAndPassword } from "@lib/data";
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from "../../../../firebase";
+
+async function findUserByEmailAndPassword(email: string, password: string) {
+  const usersRef = collection(db, 'users');
+  const q = query(usersRef, where('email', '==', email));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  const userDoc = querySnapshot.docs[0];
+  
+  if (!userDoc) {
+    return null;
+  }
+
+  const userData = userDoc.data();
+
+  if (userData.password !== password) {
+    return null;
+  }
+
+  return {
+    id: userDoc.id,
+    email: userData.email,
+    name: userData.name,
+    role: userData.role,
+  };
+}
 
 const handler = NextAuth({
   pages: {
