@@ -6,7 +6,14 @@ require('dotenv').config();
 class Search {
     constructor() {
         this.client = new Client({
-            node: 'http://localhost:9200'
+            node: 'https://6d3fbacb815e4bcfaef4625e417af9ae.us-central1.gcp.cloud.es.io:443',
+            auth: {
+                username: 'elastic',
+                password: 'Q8WK41QIeItP99HQjTRCVA6m',
+            },
+            ssl: {
+                rejectUnauthorized: false
+            }
         });
         this.client.info()
             .then(response => {
