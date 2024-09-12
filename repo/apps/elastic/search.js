@@ -6,10 +6,10 @@ require('dotenv').config();
 class Search {
     constructor() {
         this.client = new Client({
-            node: 'https://d03d98f58e4443cdaea416a5c0debb1e.us-central1.gcp.cloud.es.io:443',
+            node: 'https://6d3fbacb815e4bcfaef4625e417af9ae.us-central1.gcp.cloud.es.io:443',
             auth: {
                 username: 'elastic',
-                password: 'hkTZV93h4dGQ0dXXSRIeXnq9',
+                password: 'Q8WK41QIeItP99HQjTRCVA6m',
             },
             ssl: {
                 rejectUnauthorized: false
