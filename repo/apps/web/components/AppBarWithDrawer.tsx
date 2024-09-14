@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { mainListItems } from 'pages/dashboard/listItems';
+import { mainListItems } from '@/components/ListItems';
 import { useLoans } from '@/hooks/firebase/useLoans';
 import { signOut } from 'next-auth/react';
 import router from 'next/router';

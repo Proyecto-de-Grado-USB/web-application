@@ -12,8 +12,7 @@
       "@lib/data": ["./app/lib/data.ts"],
       "@/components/*": ["./components/*"],
       "@/hooks/*": ["./hooks/*"]
-    },
-    "ignoreBuildErrors": true
+    }
   },
   "include": [
     "next-env.d.ts",
