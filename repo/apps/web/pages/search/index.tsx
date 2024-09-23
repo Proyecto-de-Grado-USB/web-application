@@ -94,7 +94,7 @@ export default function Page(): JSX.Element {
       </Helmet>
       <MenuAppBar setQuery={handleSearch} useSemantic={useSemantic} setUseSemantic={setUseSemantic} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} />
+        <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} query={query} useSemantic={useSemantic} />
       </div>
       <BackgroundImage />
     </div>

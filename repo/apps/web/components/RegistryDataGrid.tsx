@@ -34,7 +34,9 @@ export default function RegistryDataGrid({
   rows,
   sx,
   isSearch,
-}: Readonly<RegistryDataGridProps>) {
+  useSemantic,
+  query,
+}: Readonly<RegistryDataGridProps & { useSemantic: boolean; query: string }>) {
   const [docDetailsOpen, setDocDetailsOpen] = useState(false);
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
   const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
@@ -76,7 +78,7 @@ export default function RegistryDataGrid({
     const columns: GridColDef[] = [
       {
         field: "number",
-        headerName: "# 🏆",
+        headerName: "#",
         width: 80,
         renderHeader: () => <strong># 🏆</strong>,
       },
@@ -183,6 +185,10 @@ export default function RegistryDataGrid({
         : []),
     ];    
 
+  const getRowClassName = (params) => {
+    return params.indexRelativeToCurrentPage === 0 ? "first-row" : "";
+  };
+
   return (
     <>
       <Box sx={{ ...sx, backgroundColor: "white", position: "relative" }}>
@@ -200,9 +206,15 @@ export default function RegistryDataGrid({
           pageSizeOptions={[20, 50, 100]}
           slots={isSearch ? { toolbar: CustomToolbar } : {}}
           localeText={localeText}
+          getRowClassName={getRowClassName}
           sx={{
             "& .MuiDataGrid-root": {
               fontSize: "1.2rem",
+            },
+            "& .first-row": {
+              backgroundColor: useSemantic && query !== ''
+                ? "#f4b00f"
+                : "#ffffff",
             },
           }}
         />
@@ -210,7 +222,6 @@ export default function RegistryDataGrid({
           open={docDetailsOpen}
           onClose={handleCloseDocDetails}
           selectedRow={selectedRow}
-          onOpenUserDetails={handleOpenUserDetails}
         />
         <UserDetailsDialog
           open={userDetailsOpen}
