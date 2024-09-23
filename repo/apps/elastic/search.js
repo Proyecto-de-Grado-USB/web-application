@@ -138,13 +138,13 @@ class Search {
                 knn: {
                     field: 'openai_embedding',
                     query_vector_builder: {
-                        openai_embedding: {
+                        text_embedding: {
                             model_id: 'my_openai_embedding_model',
                             model_text: queryText
                         }
                     },
                     k: 10,
-                    num_candidates: 10
+                    num_candidates: 100
                 }
             });
         } catch (error) {
