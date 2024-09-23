@@ -35,7 +35,11 @@ class Search {
                             },
                             title: {
                                 type: 'text',
-                                analyzer: 'spanish' // Use a Spanish analyzer if needed
+                                analyzer: 'spanish'
+                            },
+                            notes: {
+                                type: 'text',
+                                analyzer: 'spanish'
                             }
                         }
                     },
@@ -148,6 +152,21 @@ class Search {
             return null;
         }
     }
+
+    async getAll() {
+        try {
+            return await this.client.search({
+                index: 'my_documents',
+                size: 10,
+                query: {
+                    match_all: {}
+                }
+            });
+        } catch (error) {
+            console.error('Error searching all documents:', error);
+            return null;
+        }
+    }    
 
     async retrieveDocument(id) {
         try {

@@ -16,11 +16,8 @@ app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
     try {
-        const allDocuments = await es.search({
-            query: { match_all: {} },
-            size: 10
-        });
-  
+        const allDocuments = await es.getAll();
+
         res.json({
             documents: allDocuments.hits.hits
         });
