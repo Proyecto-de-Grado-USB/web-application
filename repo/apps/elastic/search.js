@@ -3,18 +3,15 @@ const fs = require('fs');
 
 require('dotenv').config();
 
+const API_KEY = "SECRET_KEY"
+
 class Search {
     constructor() {
         this.client = new Client({
-            node: 'https://6d3fbacb815e4bcfaef4625e417af9ae.us-central1.gcp.cloud.es.io:443',
-            auth: {
-                username: 'elastic',
-                password: 'Q8WK41QIeItP99HQjTRCVA6m',
-            },
-            ssl: {
-                rejectUnauthorized: false
-            }
+            node: 'http://localhost:9200'
         });
+        this.apiKey = API_KEY;
+        
         this.client.info()
             .then(response => {
                 console.log('Connected to Elasticsearch!');
@@ -31,18 +28,20 @@ class Search {
                 body: {
                     mappings: {
                         properties: {
-                            elser_embedding: {
-                                type: 'sparse_vector'
+                            openai_embedding: {
+                                type: 'dense_vector',
+                                dims: 1536, // This is the dimensionality of text-embedding-ada-002
+                                similarity: 'dot_product' // Set the similarity metric
                             },
                             title: {
                                 type: 'text',
-                                analyzer: 'spanish'
+                                analyzer: 'spanish' // Use a Spanish analyzer if needed
                             }
                         }
                     },
                     settings: {
                         index: {
-                            default_pipeline: 'elser-ingest-pipeline'
+                            default_pipeline: 'openai_embeddings_pipeline' // Use the OpenAI pipeline
                         }
                     }
                 }
@@ -51,54 +50,51 @@ class Search {
         } catch (error) {
             console.error('Error creating index:', error);
         }
-    }     
+    }
 
-    async deployElser() {
+    async deployOpenAI() {
         try {
-            await this.client.ml.putTrainedModel({
-                model_id: '.elser_model_2',
-                input: { field_names: ['text_field'] }
-            });
-    
-            while (true) {
-                const status = await this.client.ml.getTrainedModels({
-                    model_id: '.elser_model_2',
-                    include: 'definition_status'
-                });
-                if (status.trained_model_configs[0].fully_defined) {
-                    break;
-                }
-                await new Promise(resolve => setTimeout(resolve, 10000));
-            }
-    
-            await this.client.ml.startTrainedModelDeployment({
-                model_id: '.elser_model_2'
-            });
-    
-            await this.client.ingest.putPipeline({
-                id: 'elser-ingest-pipeline',
+            // Create OpenAI embedding model
+            await this.client.inference.put({
+                task_type: 'text_embedding',
+                inference_id: 'my_openai_embedding_model',
                 body: {
+                    service: 'openai',
+                    service_settings: { api_key: this.apiKey },
+                    task_settings: { model: 'text-embedding-ada-002' }
+                }
+            });
+
+            // Create the ingest pipeline
+            await this.client.ingest.putPipeline({
+                id: 'openai_embeddings_pipeline',
+                body: {
+                    description: 'Ingest pipeline for OpenAI embeddings.',
                     processors: [
                         {
+                            set: {
+                                field: 'combined_text',
+                                value: "{{title}} {{notes}}"
+                            }
+                        },
+                        {
                             inference: {
-                                model_id: '.elser_model_2',
-                                input_output: [ 
-                                    {
-                                      input_field: 'title',
-                                      output_field: 'elser_embedding'
-                                    }
-                                  ]
+                                model_id: 'my_openai_embedding_model',
+                                input_output: {
+                                    input_field: 'combined_text',
+                                    output_field: 'openai_embedding'
+                                }
                             }
                         }
                     ]
                 }
             });
-    
-            console.log('ELSER model deployed and pipeline created successfully.');
+
+            console.log('OpenAI embeddings pipeline created successfully.');
         } catch (error) {
-            console.error('Error deploying ELSER model:', error);
+            console.error('Error deploying OpenAI embeddings:', error);
         }
-    }    
+    }
 
     async insertDocument(document) {
         try {
@@ -130,9 +126,23 @@ class Search {
         }
     }
 
-    async search(queryArgs) {
+    async search(queryText) {
         try {
-            return await this.client.search({ index: 'my_documents', ...queryArgs });
+            return await this.client.search({
+                index: 'my_documents',
+                size: 10,
+                knn: {
+                    field: 'openai_embedding',
+                    query_vector_builder: {
+                        openai_embedding: {
+                            model_id: 'my_openai_embedding_model',
+                            model_text: queryText
+                        }
+                    },
+                    k: 10,
+                    num_candidates: 10
+                }
+            });
         } catch (error) {
             console.error('Error searching:', error);
             return null;
