@@ -35,7 +35,7 @@ app.post('/', async (req, res) => {
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.search({
+        const results = await es.getAll({
             query: {
                 bool: {
                     must: {
