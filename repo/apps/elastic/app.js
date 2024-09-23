@@ -47,7 +47,7 @@ app.post('/', async (req, res) => {
                     ...filters,
                 },
             },
-            size: 10,
+            size: 20,
             from: from_,
         });
 

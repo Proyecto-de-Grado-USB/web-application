@@ -134,7 +134,7 @@ class Search {
         try {
             return await this.client.search({
                 index: 'my_documents',
-                size: 10,
+                size: 20,
                 knn: {
                     field: 'openai_embedding',
                     query_vector_builder: {
@@ -143,7 +143,7 @@ class Search {
                             model_text: queryText
                         }
                     },
-                    k: 10,
+                    k: 20,
                     num_candidates: 100
                 }
             });
@@ -157,7 +157,7 @@ class Search {
         try {
             return await this.client.search({
                 index: 'my_documents',
-                size: 10,
+                size: 20,
                 query: {
                     match_all: {}
                 }
