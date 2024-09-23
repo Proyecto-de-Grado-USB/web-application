@@ -83,6 +83,7 @@ export default function RegistryDataGrid({
       { field: "city", headerName: "Ciudad", width: 120 },
       { field: "country", headerName: "País", width: 120 },
       { field: "edition", headerName: "Edición", width: 120 },
+      { field: "subject", headerName: "Tema", width: 120 },
       {
         field: "notes",
         headerName: "Notas",
@@ -96,7 +97,6 @@ export default function RegistryDataGrid({
             { field: "language", headerName: "Idioma", width: 120 },
             { field: "pages", headerName: "Páginas", width: 100 },
             { field: "dimensions", headerName: "Dimensiones", width: 150 },
-            { field: "subject", headerName: "Tema", width: 180 },
             { field: "property", headerName: "Estado", width: 180 },
           ]
         : []),
