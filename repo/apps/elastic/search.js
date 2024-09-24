@@ -3,7 +3,7 @@ const fs = require('fs');
 
 require('dotenv').config();
 
-const API_KEY = "SECRET_KEY"
+const API_KEY = "API_KEY"
 
 class Search {
     constructor() {
@@ -143,8 +143,8 @@ class Search {
                             model_text: queryText
                         }
                     },
-                    k: 20,
-                    num_candidates: 100
+                    k: 30,
+                    num_candidates: 1000
                 }
             });
         } catch (error) {
@@ -157,7 +157,7 @@ class Search {
         try {
             return await this.client.search({
                 index: 'my_documents',
-                size: 20,
+                size: 1000,
                 query: {
                     match_all: {}
                 }

@@ -47,7 +47,7 @@ app.post('/', async (req, res) => {
                     ...filters,
                 },
             },
-            size: 20,
+            size: 1000,
             from: from_,
         });
 
@@ -74,6 +74,11 @@ app.post('/semantic-search', async (req, res) => {
 
     try {
         const results = await es.search(query);
+
+        results.hits.hits.forEach(result => {
+            console.log(`_id: ${result._id}, _score: ${result._score}`);
+        });
+
         res.json({
             results: results.hits.hits,
             query,
