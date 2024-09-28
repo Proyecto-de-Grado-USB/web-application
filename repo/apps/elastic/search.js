@@ -65,7 +65,7 @@ class Search {
                 body: {
                     service: 'openai',
                     service_settings: { api_key: this.apiKey },
-                    task_settings: { model: 'text-embedding-ada-002' }
+                    task_settings: { model: 'text-embedding-3-large' }
                 }
             });
 
