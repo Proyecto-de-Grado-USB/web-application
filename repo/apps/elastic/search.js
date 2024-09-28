@@ -135,11 +135,12 @@ class Search {
         }
     }
 
-    async search(queryText) {
+    async search(queryText, from_) {
         try {
             return await this.client.search({
                 index: 'my_documents',
                 size: 20,
+                from: from_,
                 knn: {
                     field: 'openai_embedding',
                     query_vector_builder: {
@@ -149,7 +150,7 @@ class Search {
                         }
                     },
                     k: 30,
-                    num_candidates: 1000
+                    num_candidates: 3964
                 }
             });
         } catch (error) {

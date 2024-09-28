@@ -73,7 +73,7 @@ app.post('/semantic-search', async (req, res) => {
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.search(query);
+        const results = await es.search(query, from_);
 
         console.log(query);
 

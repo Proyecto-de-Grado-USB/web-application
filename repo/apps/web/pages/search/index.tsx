@@ -38,7 +38,7 @@ const gridStyles: SxProps = {
 
 export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
-  const [useSemantic, setUseSemantic] = useState(false);
+  const [useSemantic, setUseSemantic] = useState(true);
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
   const { results: semanticResults, loading: semanticLoading, error: semanticError, search: semanticSearch } = useSemanticSearch();
