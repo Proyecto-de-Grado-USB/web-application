@@ -128,12 +128,12 @@ export default function RegistryDataGrid({
       //   width: 120,
       //   renderHeader: () => <strong>Edición</strong>,
       // },
-      // {
-      //   field: "subject",
-      //   headerName: "Tema",
-      //   width: 300,
-      //   renderHeader: () => <strong>Tema</strong>,
-      // },
+      {
+        field: "subject",
+        headerName: "Tema",
+        width: 300,
+        renderHeader: () => <strong>Tema</strong>,
+      },
       {
         field: "notes",
         headerName: "Notas",

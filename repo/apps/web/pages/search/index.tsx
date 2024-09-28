@@ -53,7 +53,7 @@ export default function Page(): JSX.Element {
     title: doc._source.title,
     author: doc._source.author || `Author ${index + 1}`,
     publisher: doc._source.publisher || `Publisher ${index + 1}`,
-    year: doc._source.year.toString(),
+    year: doc._source.year ? doc._source.year.toString() : "s.f.",
     city: doc._source.city || `City ${String.fromCharCode(65 + index)}`,
     country: doc._source.country || `Country ${String.fromCharCode(65 + index)}`,
     edition: doc._source.edition || `Edition ${index + 1}`,

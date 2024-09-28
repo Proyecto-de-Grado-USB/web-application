@@ -110,13 +110,18 @@ class Search {
     }
 
     async insertDocuments(documents) {
-        const body = documents.flatMap(document => [{ index: { _index: 'my_documents' } }, document]);
-        try {
-            return await this.client.bulk({ body });
-        } catch (error) {
-            console.error('Error inserting documents:', error);
-            return null;
+        const chunkSize = 500;
+        for (let i = 0; i < documents.length; i += chunkSize) {
+            const chunk = documents.slice(i, i + chunkSize);
+            const body = chunk.flatMap(document => [{ index: { _index: 'my_documents' } }, document]);
+            try {
+                await this.client.bulk({ body });
+            } catch (error) {
+                console.error('Error inserting documents in batch:', error);
+                return null;
+            }
         }
+        return true;
     }
 
     async reindex() {
@@ -157,7 +162,7 @@ class Search {
         try {
             return await this.client.search({
                 index: 'my_documents',
-                size: 1000,
+                size: 3964,
                 query: {
                     match_all: {}
                 }
