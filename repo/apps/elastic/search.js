@@ -30,8 +30,8 @@ class Search {
                         properties: {
                             openai_embedding: {
                                 type: 'dense_vector',
-                                dims: 1536, // This is the dimensionality of text-embedding-ada-002
-                                similarity: 'dot_product' // Set the similarity metric
+                                dims: 3072,
+                                similarity: 'dot_product'
                             },
                             title: {
                                 type: 'text',
@@ -45,7 +45,7 @@ class Search {
                     },
                     settings: {
                         index: {
-                            default_pipeline: 'openai_embeddings_pipeline' // Use the OpenAI pipeline
+                            default_pipeline: 'openai_embeddings_pipeline'
                         }
                     }
                 }
@@ -81,7 +81,7 @@ class Search {
                                 value: `
                                     {{title}} {{author}} año {{year}}
                                     {{city}} {{country}} {{format}} 
-                                    {{isbn}} {{subject}} {{notes}}
+                                    {{subject}} {{notes}}
                                 `
                             }
                         },
