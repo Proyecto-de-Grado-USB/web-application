@@ -78,7 +78,11 @@ class Search {
                         {
                             set: {
                                 field: 'combined_text',
-                                value: "{{title}} {{notes}}"
+                                value: `
+                                    {{title}} {{author}} año {{year}}
+                                    {{city}} {{country}} {{format}} 
+                                    {{isbn}} {{subject}} {{notes}}
+                                `
                             }
                         },
                         {
