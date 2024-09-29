@@ -10,7 +10,7 @@ class Search {
         this.client = new Client({
             node: 'http://localhost:9200'
         });
-        this.apiKey = API_KEY;
+        this.apiKey = 'KEY';
         
         this.client.info()
             .then(response => {
@@ -76,13 +76,9 @@ class Search {
                     description: 'Ingest pipeline for OpenAI embeddings.',
                     processors: [
                         {
-                            set: {
-                                field: 'combined_text',
-                                value: `
-                                    {{title}} {{author}} año {{year}}
-                                    {{city}} {{country}} {{format}} 
-                                    {{subject}} {{notes}}
-                                `
+                            "set": {
+                                "field": "combined_text",
+                                "value": "{{title}} {{author}} año {{year}}, {{city}}, {{country}}, {{format}}, {{subject}}, {{notes}}"
                             }
                         },
                         {
@@ -153,7 +149,7 @@ class Search {
                             model_text: queryText
                         }
                     },
-                    k: 30,
+                    k: 3964,
                     num_candidates: 3964
                 }
             });
