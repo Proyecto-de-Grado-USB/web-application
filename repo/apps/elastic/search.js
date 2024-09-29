@@ -35,11 +35,30 @@ class Search {
                             },
                             title: {
                                 type: 'text',
-                                analyzer: 'spanish'
+                                analyzer: 'spanish',
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 1024
+                                    }
+                                }
                             },
                             notes: {
                                 type: 'text',
-                                analyzer: 'spanish'
+                                analyzer: 'spanish',
+                                keyword: {
+                                    type: 'keyword',
+                                    ignore_above: 1024
+                                }
+                            },
+                            combined_text: {
+                                type: 'text',
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 2048
+                                    }
+                                }
                             }
                         }
                     },
