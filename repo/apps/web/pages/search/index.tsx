@@ -38,7 +38,7 @@ const gridStyles: SxProps = {
 
 export default function Page(): JSX.Element {
   const [query, setQuery] = useState('');
-  const [useSemantic, setUseSemantic] = useState(false);
+  const [useSemantic, setUseSemantic] = useState(true);
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
   const { results: semanticResults, loading: semanticLoading, error: semanticError, search: semanticSearch } = useSemanticSearch();
@@ -53,7 +53,7 @@ export default function Page(): JSX.Element {
     title: doc._source.title,
     author: doc._source.author || `Author ${index + 1}`,
     publisher: doc._source.publisher || `Publisher ${index + 1}`,
-    year: doc._source.year.toString(),
+    year: doc._source.year ? doc._source.year.toString() : "s.f.",
     city: doc._source.city || `City ${String.fromCharCode(65 + index)}`,
     country: doc._source.country || `Country ${String.fromCharCode(65 + index)}`,
     edition: doc._source.edition || `Edition ${index + 1}`,

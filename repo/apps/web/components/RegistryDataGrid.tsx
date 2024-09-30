@@ -74,30 +74,111 @@ export default function RegistryDataGrid({
     }));
 
     const columns: GridColDef[] = [
-      { field: "number", headerName: "#", width: 80 },
-      { field: "location", headerName: "Ubicación", width: 120 },
-      { field: "title", headerName: "Título", width: 180 },
-      { field: "author", headerName: "Autor", width: 150 },
-      { field: "publisher", headerName: "Editorial", width: 150 },
-      { field: "year", headerName: "Año", width: 100 },
-      { field: "city", headerName: "Ciudad", width: 120 },
-      { field: "country", headerName: "País", width: 120 },
-      { field: "edition", headerName: "Edición", width: 120 },
+      {
+        field: "number",
+        headerName: "#",
+        width: 80,
+        renderHeader: () => <strong># 🏆</strong>,
+      },
+      {
+        field: "title",
+        headerName: "Título",
+        width: 360,
+        renderHeader: () => <strong>Título</strong>,
+      },
+      {
+        field: "author",
+        headerName: "Autor",
+        width: 200,
+        renderHeader: () => <strong>Autor</strong>,
+      },
+      {
+        field: "year",
+        headerName: "Año",
+        width: 100,
+        renderHeader: () => <strong>Año</strong>,
+      },
+      {
+        field: "city",
+        headerName: "Ciudad",
+        width: 120,
+        renderHeader: () => <strong>Ciudad</strong>,
+      },
+      {
+        field: "country",
+        headerName: "País",
+        width: 120,
+        renderHeader: () => <strong>País</strong>,
+      },
+      {
+        field: "subject",
+        headerName: "Tema",
+        width: 220,
+        renderHeader: () => <strong>Tema</strong>,
+      },
       {
         field: "notes",
         headerName: "Notas",
         width: isSearch ? undefined : 120,
         flex: isSearch ? 1 : undefined,
+        renderHeader: () => <strong>Notas</strong>,
       },
       ...(!isSearch
         ? [
-            { field: "format", headerName: "Formato", width: 120 },
-            { field: "isbn", headerName: "ISBN", width: 150 },
-            { field: "language", headerName: "Idioma", width: 120 },
-            { field: "pages", headerName: "Páginas", width: 100 },
-            { field: "dimensions", headerName: "Dimensiones", width: 150 },
-            { field: "subject", headerName: "Tema", width: 180 },
-            { field: "property", headerName: "Estado", width: 180 },
+            {
+              field: "location",
+              headerName: "Ubicación",
+              width: 120,
+              renderHeader: () => <strong>Ubicación</strong>,
+            },
+            {
+              field: "edition",
+              headerName: "Edición",
+              width: 120,
+              renderHeader: () => <strong>Edición</strong>,
+            },
+            {
+              field: "format",
+              headerName: "Formato",
+              width: 120,
+              renderHeader: () => <strong>Formato</strong>,
+            },
+            {
+              field: "publisher",
+              headerName: "Editorial",
+              width: 120,
+              renderHeader: () => <strong>Editorial</strong>,
+            },
+            {
+              field: "isbn",
+              headerName: "ISBN",
+              width: 160,
+              renderHeader: () => <strong>ISBN</strong>,
+            },
+            {
+              field: "language",
+              headerName: "Idioma",
+              width: 120,
+              renderHeader: () => <strong>Idioma</strong>,
+            },
+            {
+              field: "pages",
+              headerName: "Páginas",
+              width: 100,
+              renderHeader: () => <strong>Páginas</strong>,
+            },
+            {
+              field: "dimensions",
+              headerName: "Dimensiones",
+              width: 160,
+              renderHeader: () => <strong>Dimensiones</strong>,
+            },
+            {
+              field: "property",
+              headerName: "Estado",
+              width: 180,
+              renderHeader: () => <strong>Estado</strong>,
+            },
           ]
         : []),
     ];    

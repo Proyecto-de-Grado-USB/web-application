@@ -16,11 +16,8 @@ app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
     try {
-        const allDocuments = await es.search({
-            query: { match_all: {} },
-            size: 10000
-        });
-  
+        const allDocuments = await es.getAll();
+
         res.json({
             documents: allDocuments.hits.hits
         });
@@ -38,7 +35,7 @@ app.post('/', async (req, res) => {
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.search({
+        const results = await es.getAll({
             query: {
                 bool: {
                     must: {
@@ -50,7 +47,7 @@ app.post('/', async (req, res) => {
                     ...filters,
                 },
             },
-            size: 4000,
+            size: 3964,
             from: from_,
         });
 
@@ -76,17 +73,12 @@ app.post('/semantic-search', async (req, res) => {
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.search({
-            query: {
-                text_expansion: {
-                    elser_embedding: {
-                        model_id: '.elser_model_2',
-                        model_text: query
-                    }
-                }
-            },
-            size: 4000,
-            from: from_
+        const results = await es.search(query, from_);
+
+        console.log(query);
+
+        results.hits.hits.forEach(result => {
+            console.log(`_id: ${result._id}, _score: ${result._score}`);
         });
 
         res.json({
@@ -135,13 +127,13 @@ app.post('/reindex', async (req, res) => {
     }
 });
 
-app.post('/deploy-elser', async (req, res) => {
+app.post('/deploy-openai', async (req, res) => {
     try {
-        await es.deployElser();
-        res.send('ELSER model deployed and pipeline created successfully.');
+        await es.deployOpenAI();
+        res.send('OpenAI model deployed and pipeline created successfully.');
     } catch (error) {
-        console.error('Error deploying ELSER model:', error);
-        res.status(500).send('Error deploying ELSER model.');
+        console.error('Error deploying OpenAI model:', error);
+        res.status(500).send('Error deploying OpenAI model.');
     }
 });
 

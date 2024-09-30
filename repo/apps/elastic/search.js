@@ -6,15 +6,10 @@ require('dotenv').config();
 class Search {
     constructor() {
         this.client = new Client({
-            node: 'https://6d3fbacb815e4bcfaef4625e417af9ae.us-central1.gcp.cloud.es.io:443',
-            auth: {
-                username: 'elastic',
-                password: 'Q8WK41QIeItP99HQjTRCVA6m',
-            },
-            ssl: {
-                rejectUnauthorized: false
-            }
+            node: 'http://localhost:9200'
         });
+        this.apiKey = 'key';
+        
         this.client.info()
             .then(response => {
                 console.log('Connected to Elasticsearch!');
@@ -31,18 +26,45 @@ class Search {
                 body: {
                     mappings: {
                         properties: {
-                            elser_embedding: {
-                                type: 'sparse_vector'
+                            openai_embedding: {
+                                type: 'dense_vector',
+                                dims: 3072,
+                                similarity: 'dot_product'
                             },
                             title: {
                                 type: 'text',
-                                analyzer: 'spanish'
+                                analyzer: 'spanish',
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 1024
+                                    }
+                                }
+                            },
+                            notes: {
+                                type: 'text',
+                                analyzer: 'spanish',
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 1024
+                                    }
+                                }
+                            },
+                            combined_text: {
+                                type: 'text',
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 2048
+                                    }
+                                }
                             }
                         }
                     },
                     settings: {
                         index: {
-                            default_pipeline: 'elser-ingest-pipeline'
+                            default_pipeline: 'openai_embeddings_pipeline'
                         }
                     }
                 }
@@ -51,54 +73,49 @@ class Search {
         } catch (error) {
             console.error('Error creating index:', error);
         }
-    }     
+    }
 
-    async deployElser() {
+    async deployOpenAI() {
         try {
-            await this.client.ml.putTrainedModel({
-                model_id: '.elser_model_2',
-                input: { field_names: ['text_field'] }
-            });
-    
-            while (true) {
-                const status = await this.client.ml.getTrainedModels({
-                    model_id: '.elser_model_2',
-                    include: 'definition_status'
-                });
-                if (status.trained_model_configs[0].fully_defined) {
-                    break;
-                }
-                await new Promise(resolve => setTimeout(resolve, 10000));
-            }
-    
-            await this.client.ml.startTrainedModelDeployment({
-                model_id: '.elser_model_2'
-            });
-    
-            await this.client.ingest.putPipeline({
-                id: 'elser-ingest-pipeline',
+            await this.client.inference.put({
+                task_type: 'text_embedding',
+                inference_id: 'my_openai_embedding_model',
                 body: {
+                    service: 'openai',
+                    service_settings: { api_key: this.apiKey },
+                    task_settings: { model: 'text-embedding-3-large' }
+                }
+            });
+
+            await this.client.ingest.putPipeline({
+                id: 'openai_embeddings_pipeline',
+                body: {
+                    description: 'Ingest pipeline for OpenAI embeddings.',
                     processors: [
                         {
+                            "set": {
+                                "field": "combined_text",
+                                "value": "{{title}} {{author}} año {{year}}, {{city}}, {{country}}, {{format}}, {{subject}}, {{notes}}"
+                            }
+                        },
+                        {
                             inference: {
-                                model_id: '.elser_model_2',
-                                input_output: [ 
-                                    {
-                                      input_field: 'title',
-                                      output_field: 'elser_embedding'
-                                    }
-                                  ]
+                                model_id: 'my_openai_embedding_model',
+                                input_output: {
+                                    input_field: 'combined_text',
+                                    output_field: 'openai_embedding'
+                                }
                             }
                         }
                     ]
                 }
             });
-    
-            console.log('ELSER model deployed and pipeline created successfully.');
+
+            console.log('OpenAI embeddings pipeline created successfully.');
         } catch (error) {
-            console.error('Error deploying ELSER model:', error);
+            console.error('Error deploying OpenAI embeddings:', error);
         }
-    }    
+    }
 
     async insertDocument(document) {
         try {
@@ -110,13 +127,18 @@ class Search {
     }
 
     async insertDocuments(documents) {
-        const body = documents.flatMap(document => [{ index: { _index: 'my_documents' } }, document]);
-        try {
-            return await this.client.bulk({ body });
-        } catch (error) {
-            console.error('Error inserting documents:', error);
-            return null;
+        const chunkSize = 100;
+        for (let i = 0; i < documents.length; i += chunkSize) {
+            const chunk = documents.slice(i, i + chunkSize);
+            const body = chunk.flatMap(document => [{ index: { _index: 'my_documents' } }, document]);
+            try {
+                await this.client.bulk({ body });
+            } catch (error) {
+                console.error('Error inserting documents in batch:', error);
+                return null;
+            }
         }
+        return true;
     }
 
     async reindex() {
@@ -130,14 +152,44 @@ class Search {
         }
     }
 
-    async search(queryArgs) {
+    async search(queryText, from_) {
         try {
-            return await this.client.search({ index: 'my_documents', ...queryArgs });
+            return await this.client.search({
+                index: 'my_documents',
+                size: 20,
+                from: from_,
+                knn: {
+                    field: 'openai_embedding',
+                    query_vector_builder: {
+                        text_embedding: {
+                            model_id: 'my_openai_embedding_model',
+                            model_text: queryText
+                        }
+                    },
+                    k: 3964,
+                    num_candidates: 3964
+                }
+            });
         } catch (error) {
             console.error('Error searching:', error);
             return null;
         }
     }
+
+    async getAll() {
+        try {
+            return await this.client.search({
+                index: 'my_documents',
+                size: 3964,
+                query: {
+                    match_all: {}
+                }
+            });
+        } catch (error) {
+            console.error('Error searching all documents:', error);
+            return null;
+        }
+    }    
 
     async retrieveDocument(id) {
         try {
