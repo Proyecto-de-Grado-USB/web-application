@@ -191,6 +191,18 @@ class Search {
         }
     }    
 
+    async fullText(queryBody) {
+        try {
+            return await this.client.search({
+                index: 'my_documents',
+                body: queryBody
+            });
+        } catch (error) {
+            console.error('Error searching documents:', error);
+            return null;
+        }
+    }
+
     async retrieveDocument(id) {
         try {
             return await this.client.get({ index: 'my_documents', id });

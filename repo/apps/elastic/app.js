@@ -33,7 +33,7 @@ app.post('/', async (req, res) => {
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.getAll({
+        const results = await es.fullText({
             query: {
                 bool: {
                     must: {
