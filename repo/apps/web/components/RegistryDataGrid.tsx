@@ -80,58 +80,40 @@ export default function RegistryDataGrid({
         width: 80,
         renderHeader: () => <strong># 🏆</strong>,
       },
-      // {
-      //   field: "location",
-      //   headerName: "Ubicación",
-      //   width: 120,
-      //   renderHeader: () => <strong>Ubicación</strong>,
-      // },
       {
         field: "title",
         headerName: "Título",
-        width: 500,
+        width: 360,
         renderHeader: () => <strong>Título</strong>,
       },
-      // {
-      //   field: "author",
-      //   headerName: "Autor",
-      //   width: 150,
-      //   renderHeader: () => <strong>Autor</strong>,
-      // },
-      // {
-      //   field: "publisher",
-      //   headerName: "Editorial",
-      //   width: 150,
-      //   renderHeader: () => <strong>Editorial</strong>,
-      // },
-      // {
-      //   field: "year",
-      //   headerName: "Año",
-      //   width: 100,
-      //   renderHeader: () => <strong>Año</strong>,
-      // },
-      // {
-      //   field: "city",
-      //   headerName: "Ciudad",
-      //   width: 120,
-      //   renderHeader: () => <strong>Ciudad</strong>,
-      // },
-      // {
-      //   field: "country",
-      //   headerName: "País",
-      //   width: 120,
-      //   renderHeader: () => <strong>País</strong>,
-      // },
-      // {
-      //   field: "edition",
-      //   headerName: "Edición",
-      //   width: 120,
-      //   renderHeader: () => <strong>Edición</strong>,
-      // },
+      {
+        field: "author",
+        headerName: "Autor",
+        width: 200,
+        renderHeader: () => <strong>Autor</strong>,
+      },
+      {
+        field: "year",
+        headerName: "Año",
+        width: 100,
+        renderHeader: () => <strong>Año</strong>,
+      },
+      {
+        field: "city",
+        headerName: "Ciudad",
+        width: 120,
+        renderHeader: () => <strong>Ciudad</strong>,
+      },
+      {
+        field: "country",
+        headerName: "País",
+        width: 120,
+        renderHeader: () => <strong>País</strong>,
+      },
       {
         field: "subject",
         headerName: "Tema",
-        width: 300,
+        width: 220,
         renderHeader: () => <strong>Tema</strong>,
       },
       {
@@ -144,15 +126,33 @@ export default function RegistryDataGrid({
       ...(!isSearch
         ? [
             {
+              field: "location",
+              headerName: "Ubicación",
+              width: 120,
+              renderHeader: () => <strong>Ubicación</strong>,
+            },
+            {
+              field: "edition",
+              headerName: "Edición",
+              width: 120,
+              renderHeader: () => <strong>Edición</strong>,
+            },
+            {
               field: "format",
               headerName: "Formato",
               width: 120,
               renderHeader: () => <strong>Formato</strong>,
             },
             {
+              field: "publisher",
+              headerName: "Editorial",
+              width: 120,
+              renderHeader: () => <strong>Editorial</strong>,
+            },
+            {
               field: "isbn",
               headerName: "ISBN",
-              width: 150,
+              width: 160,
               renderHeader: () => <strong>ISBN</strong>,
             },
             {
@@ -170,7 +170,7 @@ export default function RegistryDataGrid({
             {
               field: "dimensions",
               headerName: "Dimensiones",
-              width: 150,
+              width: 160,
               renderHeader: () => <strong>Dimensiones</strong>,
             },
             {
