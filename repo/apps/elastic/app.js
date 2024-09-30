@@ -11,7 +11,6 @@ const es = new Search();
 app.use(cors({ origin: 'http://localhost:3001' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
@@ -31,7 +30,6 @@ app.post('/', async (req, res) => {
     console.log("full-text");
     const start_time = moment().tz('America/La_Paz');
     const query = req.body.query || '';
-    const { filters, parsed_query } = extractFilters(query);
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
@@ -40,11 +38,10 @@ app.post('/', async (req, res) => {
                 bool: {
                     must: {
                         multi_match: {
-                            query: parsed_query,
+                            query: query,
                             fields: ['*'],
                         },
                     },
-                    ...filters,
                 },
             },
             size: 3964,
@@ -167,22 +164,3 @@ app.put('/document/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
-
-function extractFilters(query) {
-    const filters = [];
-
-    const filterRegex = /category:([^\s]+)\s*/;
-    const m = query.match(filterRegex);
-    if (m) {
-        filters.push({
-            term: {
-                'category.keyword': {
-                    value: m[1],
-                },
-            },
-        });
-        query = query.replace(filterRegex, '').trim();
-    }
-
-    return { filters, parsed_query: query };
-}
