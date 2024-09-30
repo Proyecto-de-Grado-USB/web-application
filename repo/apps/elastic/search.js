@@ -46,9 +46,11 @@ class Search {
                             notes: {
                                 type: 'text',
                                 analyzer: 'spanish',
-                                keyword: {
-                                    type: 'keyword',
-                                    ignore_above: 1024
+                                fields: {
+                                    keyword: {
+                                        type: 'keyword',
+                                        ignore_above: 1024
+                                    }
                                 }
                             },
                             combined_text: {
@@ -77,7 +79,6 @@ class Search {
 
     async deployOpenAI() {
         try {
-            // Create OpenAI embedding model
             await this.client.inference.put({
                 task_type: 'text_embedding',
                 inference_id: 'my_openai_embedding_model',
@@ -88,7 +89,6 @@ class Search {
                 }
             });
 
-            // Create the ingest pipeline
             await this.client.ingest.putPipeline({
                 id: 'openai_embeddings_pipeline',
                 body: {
@@ -129,7 +129,7 @@ class Search {
     }
 
     async insertDocuments(documents) {
-        const chunkSize = 500;
+        const chunkSize = 100;
         for (let i = 0; i < documents.length; i += chunkSize) {
             const chunk = documents.slice(i, i + chunkSize);
             const body = chunk.flatMap(document => [{ index: { _index: 'my_documents' } }, document]);
