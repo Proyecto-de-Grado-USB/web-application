@@ -8,7 +8,6 @@ import RegistryDataGrid from '@/components/RegistryDataGrid';
 import useDocuments from '@/hooks/elastic/useElastic';
 import useSearchDocuments from '@/hooks/elastic/useSearch';
 import useSemanticSearch from '@/hooks/elastic/useSemantic';
-import useActivitiesInsert from '@/hooks/firebase/useActivitiesInsert';
 import { SxProps } from '@mui/system';
 
 const BackgroundImage = () => {
@@ -41,8 +40,7 @@ export default function Page(): JSX.Element {
   const [useSemantic, setUseSemantic] = useState(true);
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
-  const { results: semanticResults, loading: semanticLoading, error: semanticError, search: semanticSearch } = useSemanticSearch();
-  const { insertAction } = useActivitiesInsert();
+  const { results: semanticResults, loading: semanticLoading, error: semanticError } = useSemanticSearch(query, 0);
 
   const isSearching = query !== '';
   const rows = isSearching ? (useSemantic ? semanticResults : searchResults) : documents;
@@ -67,18 +65,6 @@ export default function Page(): JSX.Element {
     property: doc._source.property || `Properties ${index + 1}`,
   }));
 
-  const handleSearch = async (query: string) => {
-    setQuery(query);
-    if (useSemantic) {
-      semanticSearch(query);
-    }
-    try {
-      await insertAction('search', query);
-    } catch (error) {
-      console.error('Failed to log search activity:', error);
-    }
-  };
-
   if ((isSearching && (searchLoading || semanticLoading)) || (!isSearching && elasticLoading)) {
     return <div>Loading...</div>;
   }
@@ -92,7 +78,7 @@ export default function Page(): JSX.Element {
       <Helmet>
         <title>Búsqueda de Documentos</title>
       </Helmet>
-      <MenuAppBar setQuery={handleSearch} useSemantic={useSemantic} setUseSemantic={setUseSemantic} />
+      <MenuAppBar setQuery={setQuery} useSemantic={useSemantic} setUseSemantic={setUseSemantic} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} />
       </div>
