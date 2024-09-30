@@ -3,14 +3,12 @@ const fs = require('fs');
 
 require('dotenv').config();
 
-const API_KEY = "API_KEY"
-
 class Search {
     constructor() {
         this.client = new Client({
             node: 'http://localhost:9200'
         });
-        this.apiKey = 'KEY';
+        this.apiKey = 'key';
         
         this.client.info()
             .then(response => {
