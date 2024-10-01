@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
 import MenuAppBar from '@/components/AppBar';
@@ -38,8 +38,21 @@ const gridStyles: SxProps = {
 };
 
 export default function Page(): JSX.Element {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('searchQuery') || '';
+    }
+    return '';
+  });
+
   const [useSemantic, setUseSemantic] = useState(true);
+
+  useEffect(() => {
+    if (query) {
+      sessionStorage.setItem('searchQuery', query);
+    }
+  }, [query]);
+
   const { documents, loading: elasticLoading, error: elasticError } = useDocuments();
   const { results: searchResults, loading: searchLoading, error: searchError } = useSearchDocuments(query, 0);
   const { results: semanticResults, loading: semanticLoading, error: semanticError } = useSemanticSearch(query, 0);
@@ -53,7 +66,7 @@ export default function Page(): JSX.Element {
     title: doc._source.title,
     author: doc._source.author || `Author ${index + 1}`,
     publisher: doc._source.publisher || `Publisher ${index + 1}`,
-    year: doc._source.year ? doc._source.year.toString() : "s.f.",
+    year: doc._source.year ? doc._source.year.toString() : 's.f.',
     city: doc._source.city || `City ${String.fromCharCode(65 + index)}`,
     country: doc._source.country || `Country ${String.fromCharCode(65 + index)}`,
     edition: doc._source.edition || `Edition ${index + 1}`,
