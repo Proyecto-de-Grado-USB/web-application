@@ -4,6 +4,8 @@ import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import Title from './Title';
 import useActivities from '@/hooks/firebase/useActivities';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function createData(
   time: string,
@@ -19,7 +21,6 @@ export default function Chart() {
 
   React.useEffect(() => {
     if (activities && activities.length > 0) {
-      // Filter activities of type 'search'
       const filteredActivities = activities.filter((activity) => activity.action_type === 'search');
 
       const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -43,7 +44,11 @@ export default function Chart() {
   }, [activities]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {

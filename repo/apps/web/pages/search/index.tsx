@@ -9,6 +9,8 @@ import useDocuments from '@/hooks/elastic/useElastic';
 import useSearchDocuments from '@/hooks/elastic/useSearch';
 import useSemanticSearch from '@/hooks/elastic/useSemantic';
 import { SxProps } from '@mui/system';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const BackgroundImage = () => {
   return ReactDOM.createPortal(
@@ -66,7 +68,11 @@ export default function Page(): JSX.Element {
   }));
 
   if ((isSearching && (searchLoading || semanticLoading)) || (!isSearching && elasticLoading)) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if ((isSearching && (searchError || semanticError)) || (!isSearching && elasticError)) {
