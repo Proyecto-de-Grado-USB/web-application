@@ -20,7 +20,7 @@ const Search = styled('div')(({ theme }) => ({
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     width: 'auto',
   },
 }));
@@ -42,9 +42,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '36ch',
       '&:focus': {
-        width: '20ch',
+        width: '60ch',
       },
     },
   },
@@ -104,7 +104,7 @@ export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: 
             size="large"
             edge="start"
             color="inherit"
-            sx={{ mr: 1, ml: 1 }}
+            sx={{ mr: 2, ml: 2 }}
             onClick={() => router.push("/")}
           >
             <img
