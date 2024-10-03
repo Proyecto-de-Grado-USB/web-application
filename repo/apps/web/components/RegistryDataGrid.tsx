@@ -28,6 +28,7 @@ const localeText = {
     labelDisplayedRows: ({ from, to, count }) =>
       `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`,
   },
+  noRowsLabel: "No se encontraron resultados que cumplan con los criterios de búsqueda.",
 };
 
 export default function RegistryDataGrid({

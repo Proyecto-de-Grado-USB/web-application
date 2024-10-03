@@ -74,15 +74,17 @@ app.post('/semantic-search', async (req, res) => {
 
         console.log(query);
 
-        results.hits.hits.forEach(result => {
-            console.log(`_id: ${result._id}, _score: ${result._score}`);
+        const filteredResults = results.hits.hits.filter(result => result._score > 0.75);
+
+        filteredResults.forEach((result, index) => {
+            console.log(`${index + 1}, _id: ${result._id}, _score: ${result._score}`);
         });
 
         res.json({
-            results: results.hits.hits,
+            results: filteredResults,
             query,
             from: from_,
-            total: results.hits.total.value
+            total: filteredResults.length
         });
     } catch (error) {
         console.error('Error handling semantic search:', error);
