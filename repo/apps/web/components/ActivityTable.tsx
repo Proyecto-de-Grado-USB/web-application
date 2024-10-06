@@ -42,14 +42,16 @@ const ActivitiesTable: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities?.map(activity => (
-            <TableRow key={activity.action_id}>
-              <TableCell>{activity.action_id}</TableCell>
-              <TableCell>{translateActionType(activity.action_type)}</TableCell>
-              <TableCell>{new Date(activity.action_date).toLocaleString()}</TableCell>
-              <TableCell>{activity.document_id ?? '-'}</TableCell>
-            </TableRow>
-          ))}
+          {activities
+            ?.filter(activity => activity.action_type !== 'search')
+            .map(activity => (
+              <TableRow key={activity.action_id}>
+                <TableCell>{activity.action_id}</TableCell>
+                <TableCell>{translateActionType(activity.action_type)}</TableCell>
+                <TableCell>{new Date(activity.action_date).toLocaleString()}</TableCell>
+                <TableCell>{activity.document_id ?? '-'}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Switch from '@mui/material/Switch';
 import router from "next/router";
+import useActivitiesInsert from '@/hooks/firebase/useActivitiesInsert';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,6 +70,8 @@ interface SearchAppBarProps {
 }
 
 export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: SearchAppBarProps) {
+  const { insertAction } = useActivitiesInsert();
+  
   const [localQuery, setLocalQuery] = React.useState(() => {
     if (typeof window !== 'undefined') {
       return sessionStorage.getItem('searchQuery') || '';
@@ -82,9 +85,15 @@ export default function SearchAppBar({ setQuery, useSemantic, setUseSemantic }: 
     }
   }, [localQuery]);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       setQuery(localQuery);
+
+      try {
+        await insertAction('search', localQuery);
+      } catch (error) {
+        console.error('Failed to log search activity:', error);
+      }
     }
   };
 
