@@ -78,7 +78,7 @@ app.post('/semantic-search', async (req, res) => {
             console.log(`${index + 1}, _id: ${result._id}, _score: ${result._score}`);
         });
         
-        const filteredResults = results.hits.hits.filter(result => result._score > 0.75);
+        const filteredResults = results.hits.hits.filter(result => result._score > 0.7).slice(0, 10);
 
         res.json({
             results: filteredResults,
