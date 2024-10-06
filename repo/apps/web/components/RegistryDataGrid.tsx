@@ -186,7 +186,7 @@ export default function RegistryDataGrid({
 
   return (
     <>
-      <Box sx={{ ...sx, backgroundColor: "rgba(255, 255, 255, 0.95)", position: "relative" }}>
+      <Box sx={{ ...sx, backgroundColor: "rgba(255, 255, 255, 0.90)", position: "relative" }}>
         <DataGrid
           rows={rowsWithNumbers}
           columns={columns}

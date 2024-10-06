@@ -13,6 +13,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 const BackgroundImage = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return ReactDOM.createPortal(
     <div
       style={{
@@ -80,20 +90,10 @@ export default function Page(): JSX.Element {
     property: doc._source.property || `Properties ${index + 1}`,
   }));
 
-  if ((isSearching && (searchLoading || semanticLoading)) || (!isSearching && elasticLoading)) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if ((isSearching && (searchError || semanticError)) || (!isSearching && elasticError)) {
-    return <div>Error: {isSearching ? (searchError || semanticError) : elasticError}</div>;
-  }
+  const showLoadingOverlay = (isSearching && (searchLoading || semanticLoading)) || (!isSearching && elasticLoading);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <Helmet>
         <title>Búsqueda de Documentos</title>
       </Helmet>
@@ -102,6 +102,25 @@ export default function Page(): JSX.Element {
         <RegistryDataGrid rows={formattedRows} sx={gridStyles} isSearch={true} />
       </div>
       <BackgroundImage />
+
+      {showLoadingOverlay && (
+        <Box
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            zIndex: 10,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </div>
   );
 }
