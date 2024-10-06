@@ -11,7 +11,6 @@ const es = new Search();
 app.use(cors({ origin: 'http://localhost:3001' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
@@ -31,20 +30,18 @@ app.post('/', async (req, res) => {
     console.log("full-text");
     const start_time = moment().tz('America/La_Paz');
     const query = req.body.query || '';
-    const { filters, parsed_query } = extractFilters(query);
     const from_ = parseInt(req.body.from_) || 0;
 
     try {
-        const results = await es.getAll({
+        const results = await es.fullText({
             query: {
                 bool: {
                     must: {
                         multi_match: {
-                            query: parsed_query,
+                            query: query,
                             fields: ['*'],
                         },
                     },
-                    ...filters,
                 },
             },
             size: 3964,
@@ -77,15 +74,17 @@ app.post('/semantic-search', async (req, res) => {
 
         console.log(query);
 
-        results.hits.hits.forEach(result => {
-            console.log(`_id: ${result._id}, _score: ${result._score}`);
+        results.hits.hits.forEach((result, index) => {
+            console.log(`${index + 1}, _id: ${result._id}, _score: ${result._score}`);
         });
+        
+        const filteredResults = results.hits.hits.filter(result => result._score > 0.75);
 
         res.json({
-            results: results.hits.hits,
+            results: filteredResults,
             query,
             from: from_,
-            total: results.hits.total.value
+            total: filteredResults.length
         });
     } catch (error) {
         console.error('Error handling semantic search:', error);
@@ -167,22 +166,3 @@ app.put('/document/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
-
-function extractFilters(query) {
-    const filters = [];
-
-    const filterRegex = /category:([^\s]+)\s*/;
-    const m = query.match(filterRegex);
-    if (m) {
-        filters.push({
-            term: {
-                'category.keyword': {
-                    value: m[1],
-                },
-            },
-        });
-        query = query.replace(filterRegex, '').trim();
-    }
-
-    return { filters, parsed_query: query };
-}

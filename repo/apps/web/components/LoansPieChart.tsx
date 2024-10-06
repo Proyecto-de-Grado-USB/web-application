@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useLoans } from '@/hooks/firebase/useLoans';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Box, CircularProgress } from '@mui/material';
 
 const Title: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -33,7 +33,11 @@ const LoansPieChart: React.FC = () => {
     <Card>
       <CardContent>
         <Title>Estado de los Préstamos</Title>
-        {isLoading && <Typography>Loading...</Typography>}
+        {isLoading && (
+          <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+            <CircularProgress />
+          </Box>
+        )}
         {error && <Typography>Error: {error}</Typography>}
         {!isLoading && !error && (
           <PieChart

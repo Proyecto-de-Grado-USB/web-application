@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Title from './Title';
 import moment from 'moment-timezone';
 import useActivities from '@/hooks/firebase/useActivities';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface CardProps {
   title: string;
@@ -60,7 +61,11 @@ export default function Card({ title, activityType }: CardProps) {
   }, [activities, view, activityType]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {

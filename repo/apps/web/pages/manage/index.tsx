@@ -7,7 +7,7 @@ import AppBarWithDrawer from '@/components/AppBarWithDrawer';
 import useDocuments from '@/hooks/elastic/useElastic';
 import useSearchDocuments from '@/hooks/elastic/useSearch';
 import useInsert from '@/hooks/elastic/useInsert';
-import { Box, Button, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Box, Button, CssBaseline, ThemeProvider, createTheme, CircularProgress } from '@mui/material';
 import { SxProps } from '@mui/system';
 import UpdateDocumentDialog from '@/components/UpdateDocumentDialog';
 
@@ -70,7 +70,11 @@ export default function Page(): JSX.Element {
   };
 
   if ((isSearching && searchLoading) || (!isSearching && elasticLoading)) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={400}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if ((isSearching && searchError) || (!isSearching && elasticError)) {
